@@ -1,7 +1,19 @@
-﻿// ApplicationUser.cs
-namespace EduManage.Core.Entities
+﻿// Order.cs
+using EduManage.Core.Enums;
+
+namespace EduManage.Core.Entities;
+
+public class Order : BaseEntity
 {
-    public class Order
-    {
-    }
+    public int StudentId { get; set; }
+    public decimal TotalAmount { get; set; }
+    public decimal Discount { get; set; } = 0;
+    public string? CouponCode { get; set; }
+    public string PaymentMethod { get; set; } = "paymob";
+    public OrderStatus Status { get; set; } = OrderStatus.Pending;
+    public string? TransactionId { get; set; }
+
+    // Navigation
+    public ApplicationUser Student { get; set; } = null!;
+    public ICollection<OrderItem> Items { get; set; } = [];
 }

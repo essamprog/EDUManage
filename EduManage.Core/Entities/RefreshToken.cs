@@ -1,9 +1,12 @@
-﻿// ApplicationUser.cs
-namespace EduManage.Core.Entities
+﻿// RefreshToken.cs
+namespace EduManage.Core.Entities;
+
+public class RefreshToken : BaseEntity
 {
-    public class RefreshToken
-    {
-        public int UserId { get; set; }
-        public ApplicationUser User { get; set; } = null!;
-    }
+    public int UserId { get; set; }
+    public string Token { get; set; } = string.Empty;
+    public DateTime ExpiresAt { get; set; }
+
+    // Navigation
+    public ApplicationUser User { get; set; } = null!;
 }

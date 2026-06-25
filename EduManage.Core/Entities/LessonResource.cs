@@ -1,7 +1,14 @@
-﻿// ApplicationUser.cs
-namespace EduManage.Core.Entities
+﻿// LessonResource.cs
+namespace EduManage.Core.Entities;
+
+public class LessonResource : BaseEntity
 {
-    public class LessonResource
-    {
-    }
+    public int LessonId { get; set; }
+    public string FileName { get; set; } = string.Empty;
+    public string FileUrl { get; set; } = string.Empty;
+    public string? FileKey { get; set; }
+    public string FileType { get; set; } = string.Empty;
+
+    // Navigation
+    public CourseLesson Lesson { get; set; } = null!;
 }
