@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EduManage.Application/EduManage.Application.csproj" />
+  <Project Path="EduManage.Core/EduManage.Core.csproj" />
+  <Project Path="EduManage.Infrastructure/EduManage.Infrastructure.csproj" />
+  <Project Path="EduManage.Web/EduManage.Web.csproj" />
+</Solution>
