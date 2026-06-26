@@ -32,7 +32,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<EduManage.Core.Entities.Transaction> Transactions { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<Withdrawal> Withdrawals { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
@@ -40,15 +40,19 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Setting> Settings { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);  // مهم جداً — Identity بيحتاجه
+        base.OnModelCreating(modelBuilder);
 
-        // تطبيق كل الـ Configurations من الـ Assembly دفعة واحدة
-        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-        // Soft Delete Global Filter
-        builder.Entity<ApplicationUser>()
-               .HasQueryFilter(u => u.DeletedAt == null);
+        var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetForeignKeys())
+            .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+        foreach (var fk in cascadeFKs)
+        {
+            fk.DeleteBehavior = DeleteBehavior.Restrict;
+        }
     }
 }
