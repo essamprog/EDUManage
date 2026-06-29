@@ -1,3 +1,8 @@
+using EduManage.Application.Interfaces;
+using EduManage.Application.Services.Auth;
+using EduManage.Application.Services.Courses;
+using EduManage.Application.Services.Financial;
+using EduManage.Application.Services.System;
 using EduManage.Core.Entities;
 using EduManage.Core.Interfaces;
 using EduManage.Infrastructure;
@@ -35,12 +40,15 @@ namespace EduManage.Web
 
             // ── Services ─────────────────────────────────────────────
             // عضو 2 هيضيف هنا:
-            // builder.Services.AddScoped<IAuthService, AuthService>();
-            // builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ICourseService, CourseService>();
 
             // عضو 3 هيضيف هنا:
-            // builder.Services.AddScoped<IOrderService, OrderService>();
-            // builder.Services.AddScoped<IWalletService, WalletService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IWalletService, WalletService>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<SearchService, SearchService>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
