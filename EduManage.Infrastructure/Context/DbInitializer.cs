@@ -2,6 +2,7 @@
 using EduManage.Core.Enums;
 using EduManage.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
