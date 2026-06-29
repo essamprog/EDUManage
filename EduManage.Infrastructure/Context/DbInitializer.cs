@@ -49,10 +49,10 @@ public static class DbInitializer
         if (!context.Categories.Any())
         {
             context.Categories.AddRange(
-            new Category { Name = "Programming and Development", Slug = "programming" },
-            new Category { Name = "Graphic Design", Slug = "design" },
-            new Category { Name = "Business and Entrepreneurship", Slug = "business" }
-                        );
+                new Category { Name = "Programming and Development", Slug = "programming" },
+                new Category { Name = "Graphic Design", Slug = "design" },
+                new Category { Name = "Business and Entrepreneurship", Slug = "business" }
+            );
             await context.SaveChangesAsync();
         }
 
