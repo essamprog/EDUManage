@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - EduManage Admin</title>
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+
+    <header style="background:#0d6efd;color:white;padding:15px;">
+        <h2>EduManage Admin Panel</h2>
+    </header>
+
+    <div style="display:flex;min-height:90vh;">
+
+        <aside style="width:250px;background:#f5f5f5;padding:20px;">
+
+            <h4>Menu</h4>
+
+            <hr />
+
+            <p>
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Index">
+                    Dashboard
+                </a>
+            </p>
+
+            <p>Users</p>
+
+            <p>Courses</p>
+
+            <p>Finance</p>
+
+        </aside>
+
+        <main style="flex:1;padding:25px;">
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>س
