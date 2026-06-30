@@ -20,4 +20,5 @@ public class CourseDto
     public string InstructorName { get; set; } = string.Empty;
     public string? CategoryName { get; set; }
     public bool IsBestseller { get; set; }
+    public string? Description { get; set; }
 }

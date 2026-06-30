@@ -2,7 +2,7 @@
 using EduManage.Application.DTOs.Courses;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace EduManage.Application.Interfaces
 {
@@ -15,6 +15,7 @@ namespace EduManage.Application.Interfaces
         Task DeleteAsync(int id);
         Task<bool> PublishAsync(int id);
         Task<IEnumerable<CourseDto>> GetByInstructorAsync(int instructorId);
-    }
 
+        Task<IEnumerable<CourseDto>> GetPublishedCoursesAsync();
+    }
 }

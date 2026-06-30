@@ -15,4 +15,5 @@ public class CreateCourseDto
     public int? CategoryId { get; set; }
     public decimal Price { get; set; }
     public string Language { get; set; } = "Arabic";
+    public string? ThumbnailUrl { get; set; }
 }

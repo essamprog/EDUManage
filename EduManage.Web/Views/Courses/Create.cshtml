@@ -1,0 +1,20 @@
+﻿@model EduManage.Application.DTOs.Courses.CreateCourseDto
+
+<div class="container mt-5" dir="ltr">
+    <h2>Add a new course</h2>
+
+    <form asp-action="Create" asp-controller="Courses" method="post" enctype="multipart/form-data">
+        
+        <div class="mb-3">
+            <label class="form-label">Course Title</label>
+            <input type="text" asp-for="Title" class="form-control" placeholder="Write the name of the course..." required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">cover image (Thumbnail)</label>
+            <input type="file" name="imageFile" class="form-control" accept="image/*" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save and upload the course</button>
+    </form>
+</div>

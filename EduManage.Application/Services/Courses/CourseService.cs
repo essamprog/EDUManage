@@ -110,9 +110,14 @@ public class CourseService : ICourseService
         return true;
     }
 
-    public async Task<IEnumerable<CourseDto>> GetByInstructorAsync(int instructorId)
+    public async Task<IEnumerable<CourseDto>> GetPublishedCoursesAsync()
     {
-        var courses = await _uow.Courses.FindAsync(c => c.InstructorId == instructorId);
+        var courses = await _uow.Courses.GetAllAsync();
         return _mapper.Map<IEnumerable<CourseDto>>(courses);
+    }
+
+    public Task<IEnumerable<CourseDto>> GetByInstructorAsync(int instructorId)
+    {
+        throw new NotImplementedException();
     }
 }

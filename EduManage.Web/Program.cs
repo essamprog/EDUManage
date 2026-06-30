@@ -1,3 +1,4 @@
+using EduManage.Application.DTOs.System;
 using EduManage.Application.Interfaces;
 using EduManage.Application.Services.Auth;
 using EduManage.Application.Services.Courses;
@@ -53,6 +54,9 @@ namespace EduManage.Web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
             builder.Services.AddControllersWithViews();
+
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
 
             var app = builder.Build();
 
