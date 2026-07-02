@@ -1,34 +1,52 @@
-﻿@{
+﻿@model EduManage.Web.ViewModels.RegisterViewModel
+
+@{
     ViewData["Title"] = "Register";
 }
 
 <h2>Create Account</h2>
 
-<form method="post">
+<form asp-action="Register" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
 
     <div>
-        <label>Full Name</label><br />
-        <input type="text" />
+        <label asp-for="FullName"></label><br />
+        <input asp-for="FullName" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
 
     <br />
 
     <div>
-        <label>Email</label><br />
-        <input type="email" />
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <br />
 
     <div>
-        <label>Password</label><br />
-        <input type="password" />
+        <label asp-for="Password"></label><br />
+        <input asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <br />
 
-    <button type="submit">
-        Register
-    </button>
+    <div>
+        <label asp-for="ConfirmPassword"></label><br />
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    <button type="submit">Register</button>
 
 </form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

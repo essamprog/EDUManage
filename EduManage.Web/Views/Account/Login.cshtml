@@ -1,31 +1,156 @@
 ﻿@{
     ViewData["Title"] = "Login";
+    Layout = null; // مؤقتًا علشان يفتح التصميم كما هو
 }
 
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<form method="post">
+<head>
 
-    <div>
-        <label>Email</label><br />
-        <input type="email" name="Email" />
-    </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <br />
+<title>Login & Register</title>
 
-    <div>
-        <label>Password</label><br />
-        <input type="password" name="Password" />
-    </div>
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true">
 
-    <br />
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <button type="submit">
-        Login
-    </button>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+    
+
+<div class="container" id="container">
+
+<div class="form-container sign-up">
+
+<form asp-controller="Account" asp-action="Register" method="post" id="registerForm">
+
+<h1>Create Account</h1>
+
+<div class="social-icons">
+
+<a href="#"><i class="fab fa-google"></i></a>
+
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+
+<a href="#"><i class="fab fa-github"></i></a>
+
+<a href="#"><i class="fab fa-linkedin-in"></i></a>
+
+</div>
+
+<span>or use your email for registration</span>
+
+<input type="text" name="FullName" placeholder="Full Name" required>
+
+<input type="email" name="Email" placeholder="Email" required>
+
+<input type="password" name="Password" placeholder="Password" required>
+
+<input type="password" name="ConfirmPassword" placeholder="Confirm Password" required>
+
+<button>Create Account</button>
 
 </form>
 
-<br />
+</div>
 
-<a asp-action="Register">Create New Account</a>
+
+
+<div class="form-container sign-in">
+
+<form>
+
+<h1>Sign In</h1>
+
+<div class="social-icons">
+
+<a href="#"><i class="fab fa-google"></i></a>
+
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+
+<a href="#"><i class="fab fa-github"></i></a>
+
+<a href="#"><i class="fab fa-linkedin-in"></i></a>
+
+</div>
+
+<span>or use your email password</span>
+
+<input type="email" placeholder="Email">
+
+<input type="password" placeholder="Password">
+
+<a href="../Login/index.html#request">Forget Your Password?</a>
+
+<button>Sign In</button>
+
+</form>
+
+</div>
+
+
+
+<div class="toggle-container">
+
+<div class="toggle">
+
+<div class="toggle-panel toggle-left" >
+
+<h1>Welcome Back!</h1>
+
+<p>
+
+Enter your personal details to use all site features
+
+</p>
+
+<button class="hidden" id="login">
+
+Login
+
+</button>
+
+</div>
+
+
+
+<div class="toggle-panel toggle-right">
+
+<h1>Hello, Friend!</h1>
+
+<p>
+
+Register with your personal details to use all site features
+
+</p>
+
+<button class="hidden" id="register">
+
+Sign Up
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="~/js/login.js" asp-append-version="true"></script>
+
+</body>
+
+</html>

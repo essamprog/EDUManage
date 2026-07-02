@@ -1,8 +1,696 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduManage</title>
+
+   <link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header>
+
+        <div class="container">
+
+            <nav class="navbar">
+
+                <div class="logo">
+
+                   <i class="fa-solid fa-graduation-cap"></i>
+
+                    <h2>EDUManage</h2>
+
+                </div>
+
+                <ul class="nav-links">
+
+                    <li><a class="active" href="#">Home</a></li>
+
+                    <li><a href="~/Courses/Browse">Courses</a></li>
+
+                    <li><a href="~/Instructor/Dashboard">Instructors</a></li>
+
+                    <li><a href="~/Home#footer">About </a></li>
+
+                </ul>
+
+                <div class="nav-btns">
+
+                    <a href="" class="cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+
+                  <a href="/Account/Login" class="login">
+    Login
+</a>
+                    
+                   <a href="/Account/Register" class="signup">
+    Sign Up
+</a>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="container hero-content">
+
+            <div class="hero-left">
+
+                <span class="hero-badge">
+
+                    🚀 The #1 Platform For IT Graduates
+
+                </span>
+
+                <h1>
+
+                    Master the Skills
+
+                    <span>Industry Demands</span>
+
+                </h1>
+
+                <p>
+
+                    Defura-LMS delivers hands-on IT courses built for the real world.
+                    From cloud architecture to full-stack development, accelerate your
+                    career with expert-led learning.
+
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#Featured Courses" class="primary-btn">
+
+                        Get Started — It's Free
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                    <a href="#" class="secondary-btn">
+
+                        <i class="fa-solid fa-play"></i>
+
+                        Watch Demo
+
+                    </a>
+
+                </div>
+
+                <div class="reviews">
+
+                    <div class="avatars">
+
+                        <img src="~/photo/inst 1.jpg">
+
+                        <img src="~/photo/inst 2.jpg">
+
+                        <img src="~/photo/inst 3.jpg">
+
+                        <img src="~/photo/inst 4.jpg">
+
+                    </div>
+
+                    <div class="review-text">
+
+                        ⭐⭐⭐⭐⭐
+
+                        <p>
+
+                            Trusted by 50,000+ learners
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <h4>TOPICS COVERED</h4>
+
+                <div class="topics">
+
+                    <span>React</span>
+
+                    <span>Node.js</span>
+
+                    <span>Python</span>
+
+                    <span>AWS</span>
+
+                    <span>Docker</span>
+
+                    <span>TypeScript</span>
+
+                    <span>Kubernetes</span>
+
+                    <span>Machine Learning</span>
+
+                </div>
+
+            </div>
+
+         
+
+        </div>
+
+    </section>
+    <!-- ================= FEATURED COURSES ================= -->
+<section class="featured-courses">
+
+    <div class="container">
+
+        <div class="courses-header">
+
+            <div class="section-title">
+
+                <span class="top-badge">
+                    <i class="fa-regular fa-bookmark"></i>
+                    TOP PICKS
+                </span>
+
+                <h2 id="Featured Courses">Featured Courses</h2>
+
+                <p>
+                    Hand-picked by our curriculum team. Start with these and
+                    advance your IT career in weeks, not years.
+                </p>
+
+            </div>
+
+            <a href="#" class="view-all">
+                View All Courses
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+<div class="courses-grid">
+
+    <!-- Card 1 -->
+    <div class="course-card">
+
+        <div class="course-image">
+            <img src="~/photo/database.jpg" alt="">
+            <span class="discount">-44%</span>
+        </div>
+
+        <div class="course-body">
+
+            <div class="course-tags">
+                <span>Database</span>
+                <span>Advanced</span>
+            </div>
+
+            <h3>Database Management Fundamentals</h3>
+
+            <div class="instructor">
+                <img src="~/photo/inst 1.jpg" alt="">
+                <span>Dr. Osama Mokhtar</span>
+            </div>
+
+            <div class="rating">
+                ⭐⭐⭐⭐⭐
+                <span>(4.9)</span>
+            </div>
+
+            <div class="course-info">
+                <span><i class="fa-regular fa-clock"></i> 2h 40m</span>
+                <span><i class="fa-solid fa-users"></i> 820</span>
+            </div>
+
+            <div class="course-footer">
+
+                <div class="price">
+                    <strong>$49</strong>
+                    <del>$89</del>
+                </div>
+
+                <a href="/Account/register">
+                    Enroll
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Card 2 -->
+    <div class="course-card">
+
+        <div class="course-image">
+            <img src="~/photo/react.jpg" alt="">
+            <span class="discount">-35%</span>
+        </div>
+
+        <div class="course-body">
+
+            <div class="course-tags">
+                <span>Frontend</span>
+                <span>Beginner</span>
+            </div>
+
+            <h3>Complete HTML CSS JavaScript Bootcamp</h3>
+
+            <div class="instructor">
+                <img src="~/photo/inst 2.jpg" alt="">
+                <span>Eng. Ahmed Ali</span>
+            </div>
+
+            <div class="rating">
+                ⭐⭐⭐⭐⭐
+                <span>(4.8)</span>
+            </div>
+
+            <div class="course-info">
+                <span><i class="fa-regular fa-clock"></i> 12h</span>
+                <span><i class="fa-solid fa-users"></i> 1.5K</span>
+            </div>
+
+            <div class="course-footer">
+
+                <div class="price">
+                    <strong>$39</strong>
+                    <del>$60</del>
+                </div>
+
+                <a href="/Account/register">
+                    Enroll
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Card 3 -->
+    <div class="course-card">
+
+        <div class="course-image">
+            <img src="~/photo/devops.jpg" alt="">
+            <span class="discount">-50%</span>
+        </div>
+
+        <div class="course-body">
+
+            <div class="course-tags">
+                <span>Cloud</span>
+                <span>Intermediate</span>
+            </div>
+
+            <h3>AWS Cloud Practitioner Certification</h3>
+
+            <div class="instructor">
+                <img src="~/photo/inst 3.jpg" alt="">
+                <span>Eng. Mohamed Hassan</span>
+            </div>
+
+            <div class="rating">
+                ⭐⭐⭐⭐⭐
+                <span>(5.0)</span>
+            </div>
+
+            <div class="course-info">
+                <span><i class="fa-regular fa-clock"></i> 15h</span>
+                <span><i class="fa-solid fa-users"></i> 950</span>
+            </div>
+
+            <div class="course-footer">
+
+                <div class="price">
+                    <strong>$59</strong>
+                    <del>$99</del>
+                </div>
+
+                <a href="/Account/register">
+                    Enroll
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Card 4 -->
+    <div class="course-card">
+
+        <div class="course-image">
+            <img src="~/photo/Python.jpg" alt="">
+            <span class="discount">-30%</span>
+        </div>
+
+        <div class="course-body">
+
+            <div class="course-tags">
+                <span>AI</span>
+                <span>Advanced</span>
+            </div>
+
+            <h3>Python Machine Learning Masterclass</h3>
+
+            <div class="instructor">
+                <img src="~/photo/inst 4.jpg" alt="">
+                <span>Dr. Mahmoud Salah</span>
+            </div>
+
+            <div class="rating">
+                ⭐⭐⭐⭐⭐
+                <span>(4.9)</span>
+            </div>
+
+            <div class="course-info">
+                <span><i class="fa-regular fa-clock"></i> 20h</span>
+                <span><i class="fa-solid fa-users"></i> 2.1K</span>
+            </div>
+
+            <div class="course-footer">
+
+                <div class="price">
+                    <strong>$79</strong>
+                    <del>$129</del>
+                </div>
+
+                <a href="/Account/register">
+                    Enroll
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
+<!-- ================= CATEGORIES ================= -->
+
+<section class="categories">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <span>BROWSE CATEGORIES</span>
+
+            <h2>Choose Your Learning Path</h2>
+
+            <p>
+                Discover professional IT tracks designed for every career.
+            </p>
+
+        </div>
+
+        <div class="category-grid">
+
+            <div class="category-card">
+                <div class="icon">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+
+                <h3>Web Development</h3>
+
+                <p>
+                    HTML, CSS, JavaScript, React, ASP.NET, Angular
+                </p>
+
+                <span>48 Courses</span>
+            </div>
+
+            <div class="category-card">
+
+                <div class="icon">
+                    <i class="fa-solid fa-cloud"></i>
+                </div>
+
+                <h3>Cloud Computing</h3>
+
+                <p>
+                    AWS, Azure, Docker, Kubernetes & DevOps
+                </p>
+
+                <span>35 Courses</span>
+
+            </div>
+
+            <div class="category-card">
+
+                <div class="icon">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+
+                <h3>Database</h3>
+
+                <p>
+                    SQL Server, MySQL, Oracle & MongoDB
+                </p>
+
+                <span>22 Courses</span>
+
+            </div>
+
+            <div class="category-card">
+
+                <div class="icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <h3>Cyber Security</h3>
+
+                <p>
+                    Ethical Hacking, PenTesting & Security
+                </p>
+
+                <span>31 Courses</span>
+
+            </div>
+
+            <div class="category-card">
+
+                <div class="icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <h3>Artificial Intelligence</h3>
+
+                <p>
+                    Machine Learning, Deep Learning & NLP
+                </p>
+
+                <span>27 Courses</span>
+
+            </div>
+
+            <div class="category-card">
+
+                <div class="icon">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+
+                <h3>Mobile Development</h3>
+
+                <p>
+                    Flutter, Android & IOS Development
+                </p>
+
+                <span>18 Courses</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ================= CTA ================= -->
+<section class="cta-section">
+    <div class="container">
+
+        <div class="card blue-card">
+            <div class="icon">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+
+            <span>FOR LEARNERS</span>
+
+            <h2>Start learning.<br>Advance your career.</h2>
+
+            <p>
+                Join 52,000+ IT professionals. Access 500+ expert-led
+                courses and earn certificates recognized worldwide.
+            </p>
+
+            <div class="buttons">
+                <a href="#Featured Courses" class="btn btn-white">
+                    Get Started Free
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a href="~/Courses/Browse" class="btn btn-outline">
+                    Browse Courses
+                </a>
+            </div>
+        </div>
+
+        <div class="card dark-card">
+            <div class="icon">
+                <i class="fa-solid fa-microphone"></i>
+            </div>
+
+            <span>FOR EDUCATORS</span>
+
+            <h2>Share your expertise.<br>Earn at scale.</h2>
+
+            <p>
+                Reach thousands of learners, build your brand,
+                and monetize your knowledge on the fastest-growing
+                IT education platform.
+            </p>
+
+            <div class="buttons">
+                            <a href="~/Instructor/Dashboard" class="btn btn-blue">
+                    Become an Instructor
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                            <a href="~/Instructor/Dashboard#teacher-card-5" class="btn btn-outline-dark">
+                    Learn More
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+</section> 
+<footer class="footer" id="footer">
+
+    <div class="container footer-container">
+
+        <div class="footer-box">
+
+            <div class="logo">
+                   <i class="fa-solid fa-graduation-cap"></i>
+                <h2>EDU Manage</h2>
+            </div>
+
+            <p>
+                A complete learning platform with top courses and instructors
+                to help you grow your skills and reach your career goals.
+            </p>
+
+            <div class="social">
+
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+
+                <a href="#"><i class="fab fa-instagram"></i></a>
+
+                <a href="#"><i class="fab fa-youtube"></i></a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-box">
+
+            <h3>Platform</h3>
+
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="~/Courses/Browse">All Courses</a></li>
+                <li><a href="~/Instructor/Dashboard"> Instructor</a></li>
+                <li><a href="~/Home#footer">About</a></li>
+            </ul>
+
+        </div>
+
+        <div class="footer-box">
+
+            <h3>Support</h3>
+
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#">Terms Of Use</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+
+        </div>
+
+        <div class="footer-box">
+
+            <h3>Contact</h3>
+
+            <ul class="contact">
+
+                <li>
+                    <i class="fa-regular fa-envelope"></i>
+                    support@Defura.com
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-phone"></i>
+                    +20 100 000 0000
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Beni Suef, Egypt
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+
+        <p>© 2026 Defura. All rights reserved.</p>
+
+        <div class="links">
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Privacy</a>
+            <a href="#">Sitemap</a>
+        </div>
+
+    </div>
+</footer>
+
+</body>
+</html>

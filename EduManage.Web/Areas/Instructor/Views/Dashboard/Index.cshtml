@@ -1,7 +1,617 @@
 ﻿@{
-    ViewData["Title"] = "Instructor Dashboard";
+    ViewData["Title"] = "Instructors";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<h2>Instructor Dashboard</h2>
+<head>
 
-<p>Welcome Instructor</p>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Instructors</title>
+
+    <link rel="stylesheet" href="~/css/Instructors.css" asp-append-version="true">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="container nav-container">
+
+            <div class="logo">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                <h2>EDU Manage</h2>
+
+            </div>
+
+            <ul class="nav-links">
+
+                <li><a href="~/Home">Home</a></li>
+
+                <li><a href="~/Courses/Browse">Courses</a></li>
+
+                <li><a class="#">Instructors</a></li>
+
+                <li><a href="~/Instructor/Dashboard#footer">About </a></li>
+
+            </ul>
+
+            <div class="nav-btns">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <a href="/Account/Login" class="login">
+                    Login
+                </a>
+
+                <a href="/Account/Register" class="signup">
+                    Sign Up
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <section class="hero">
+
+        <div class="container">
+
+            <h1>World-Class Educators</h1>
+
+            <p>
+
+                Learn from industry experts, visionary thinkers,
+                and scholarly masters dedicated to your intellectual growth.
+
+            </p>
+
+            <div class="search-sort">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="text"
+                           placeholder="Search educators by name, expertise, or keywords...">
+
+                </div>
+
+                <div class="sort">
+
+                    <span>Sort by:</span>
+
+                    <button class="active">Students</button>
+
+                    <button>Top Rated</button>
+
+                    <button>Courses</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="teachers">
+
+        <div class="container">
+
+            <div class="teachers-grid">
+                <!--========== CARD 1 ==========-->
+
+                <div class="teacher-card">
+
+                    <div class="teacher-img green">
+                        AK
+                    </div>
+
+                    <div class="teacher-rate">
+                        ⭐ 5.0
+                    </div>
+
+                    <span class="experience">
+                        5 YEARS EXP
+                    </span>
+
+                    <h3>Ashraf Khalaf</h3>
+
+                    <p>Senior Educator</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>2</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>12</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+
+
+                <!--========== CARD 2 ==========-->
+
+                <div class="teacher-card">
+
+                    <div class="teacher-img orange">
+                        DM
+                    </div>
+
+                    <div class="teacher-rate">
+                        ⭐ 4.8
+                    </div>
+
+                    <span class="experience">
+                        5+ YEARS
+                    </span>
+
+                    <h3>Dr/Osama Mokhtar</h3>
+
+                    <p>Cisco Certified Instructor</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>4</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>11</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+
+
+                <!--========== CARD 3 ==========-->
+
+                <div class="teacher-card">
+
+                    <div class="teacher-img red">
+                        RM
+                    </div>
+
+                    <div class="teacher-rate">
+                        ⭐ 4.5
+                    </div>
+
+                    <span class="experience">
+                        5+ YEARS
+                    </span>
+
+                    <h3>Rabie Mohammed</h3>
+
+                    <p>Software Development Mentor</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>3</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>10</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+
+
+                <!--========== CARD 4 ==========-->
+
+                <div class="teacher-card">
+
+                    <div class="teacher-img orange">
+                        DF
+                    </div>
+
+                    <div class="teacher-rate">
+                        ⭐ 5.0
+                    </div>
+
+                    <span class="experience">
+                        3-5 YEARS
+                    </span>
+
+                    <h3>D/Ahmed Fathy</h3>
+
+                    <p>Cyber Security</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>1</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>6</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+
+
+                <!--========== CARD 5 ==========-->
+
+                <div class="teacher-card" id="teacher-card-5">
+
+                    <img class="avatar"
+                         src="~/photo/inst 1.jpg"
+                         alt="">
+
+                    <div class="teacher-rate">
+                        ⭐ 5.0
+                    </div>
+
+                    <span class="experience">
+                        5+ YEARS
+                    </span>
+
+                    <h3>Dr/Ali Mohamed  </h3>
+
+                    <p>Web Development</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>1</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>6</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+                <!--========== CARD 6 ==========-->
+
+                <div class="teacher-card">
+
+                    <img class="avatar"
+                         src="~/photo/inst 2.jpg"
+                         alt="">
+
+                    <div class="teacher-rate">
+                        ⭐ 5.0
+                    </div>
+
+                    <span class="experience">
+                        5+ YEARS
+                    </span>
+
+                    <h3>Dr/Ahmed Ail </h3>
+
+                    <p>Computer Science</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>1</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>5</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+
+
+                <!--========== CARD 7 ==========-->
+
+                <div class="teacher-card">
+
+                    <img class="avatar"
+                         src="~/photo/inst 3.jpg"
+                         alt="">
+
+                    <div class="teacher-rate">
+                        ⭐ 5.0
+                    </div>
+
+                    <span class="experience">
+                        5+ YEARS
+                    </span>
+
+                    <h3>Boda Abdelaziz</h3>
+
+                    <p>Artificial Intelligence</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>1</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>3</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+
+
+                <!--========== CARD 8 ==========-->
+
+                <div class="teacher-card">
+
+                    <img class="avatar github"
+                         src="~/photo/inst 4.jpg"
+                         alt="">
+
+                    <div class="teacher-rate">
+                        ⭐ 5.0
+                    </div>
+
+                    <span class="experience">
+                        3-5 YEARS
+                    </span>
+
+                    <h3>Adham Ashraf</h3>
+
+                    <p>React Developer</p>
+
+                    <div class="teacher-info">
+
+                        <div>
+
+                            <h4>0</h4>
+
+                            <span>COURSES</span>
+
+                        </div>
+
+                        <div>
+
+                            <h4>0</h4>
+
+                            <span>STUDENTS</span>
+
+                        </div>
+
+                    </div>
+
+                    <button>View Profile</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!--================ FOOTER ================-->
+
+    <footer class="footer" id="footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-box">
+
+                <div class="logo">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    <h2>EDU Manage</h2>
+
+                </div>
+
+                <p>
+
+                    A complete learning platform with top
+                    courses and instructors to help you grow
+                    your skills and reach your career goals.
+
+                </p>
+
+                <div class="social">
+
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+
+                    <a href="#"><i class="fab fa-x-twitter"></i></a>
+
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+
+                </div>
+
+            </div>
+
+            <div class="footer-box">
+
+                <h3>Platform</h3>
+
+                <ul>
+
+                    <li><a href="~/Home">Home</a></li>
+
+                    <li><a href="~/Courses/Browse">Courses</a></li>
+
+                    <li><a href="#">Instructor</a></li>
+
+                    <li><a href="~/Instructor/Dashboard#footer">About</a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="footer-box">
+
+                <h3>Support</h3>
+
+                <ul>
+
+                    <li><a href="#">Help Center</a></li>
+
+                    <li><a href="#">Refund Policy</a></li>
+
+                    <li><a href="#">Terms Of Use</a></li>
+
+                    <li><a href="#">Privacy Policy</a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="footer-box">
+
+                <h3>Contact</h3>
+
+                <ul>
+
+                    <li>
+                        <i class="fa-regular fa-envelope"></i>
+                        support@edumanage.com
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        +20 100 000 0000
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-location-dot"></i>
+                        Beni Suef, Egypt
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>© 2026 EDU Manage. All Rights Reserved.</p>
+
+                <div class="bottom-links">
+
+                    <a href="#">Terms & Conditions</a>
+
+                    <a href="#">Privacy</a>
+
+                    <a href="#">Sitemap</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+    <script src="~/js/instructor.js" asp-append-version="true"></script>
+</body>
+</html>

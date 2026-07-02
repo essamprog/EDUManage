@@ -1,9 +1,932 @@
 ﻿@{
     ViewData["Title"] = "Courses";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<h2>Browse Courses</h2>
+<head>
 
-<hr />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<p>All available courses will appear here.</p>
+    <title>Courses</title>
+
+    <link rel="stylesheet" href="~/css/Courses.css" asp-append-version="true">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!--================ NAVBAR =================-->
+
+    <nav class="navbar">
+
+        <div class="container nav-container">
+
+            <div class="logo">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                <h2>EDU Manage</h2>
+
+            </div>
+
+            <ul class="nav-links">
+
+                <li><a href="~/Home">Home</a></li>
+
+                <li><a class="active" href="#">Courses</a></li>
+
+                <li><a href="~/Instructor/Dashboard">Instructors</a></li>
+
+                <li><a href="~/Courses/Browse#footer">About</a></li>
+
+            </ul>
+
+            <div class="nav-btns">
+
+                <i class="fa-solid fa-cart-shopping cart"></i>
+
+                <a href="/Account/Login" class="login">
+                    Login
+                </a>
+
+                <a href="/Account/Register" class="signup">
+                    Sign Up
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!--================ HERO =================-->
+
+    <section class="hero">
+
+        <div class="container">
+
+            <h1>Explore Courses</h1>
+
+            <p>10 courses to advance your IT career</p>
+
+            <div class="search-box">
+
+                <input type="text" placeholder="Search courses, skills, or instructors...">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--================ COURSES =================-->
+
+    <section class="courses">
+
+        <div class="container courses-container">
+
+            <!-- SIDEBAR -->
+
+            <aside class="sidebar">
+
+                <h3>
+                    <i class="fa-solid fa-sliders"></i>
+                    Filters
+                </h3>
+
+                <div class="filter">
+
+                    <h4>Category</h4>
+
+                    <ul>
+
+                        <li class="active">All</li>
+
+                        <li>Backend</li>
+
+                        <li>Cyber Security</li>
+
+                        <li>DevOps</li>
+
+                        <li>Frontend</li>
+
+                        <li>Machine Learning</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="filter">
+
+                    <h4>Level</h4>
+
+                    <label><input checked type="radio"> All Levels</label>
+
+                    <label><input type="radio"> Beginner</label>
+
+                    <label><input type="radio"> Intermediate</label>
+
+                    <label><input type="radio"> Advanced</label>
+
+                </div>
+
+                <div class="filter">
+
+                    <h4>Max Price</h4>
+
+                    <input type="range">
+
+                    <div class="prices">
+
+                        <span>Free</span>
+
+                        <span>Any Price</span>
+
+                    </div>
+
+                </div>
+
+                <div class="filter">
+
+                    <h4>Min Rating</h4>
+
+                    <label><input type="checkbox"> ⭐⭐⭐⭐⭐</label>
+
+                    <label><input type="checkbox"> ⭐⭐⭐⭐</label>
+
+                    <label><input type="checkbox"> ⭐⭐⭐</label>
+
+                </div>
+
+            </aside>
+
+            <!-- RIGHT -->
+
+            <div class="courses-content">
+
+                <div class="top-bar">
+
+                    <select>
+
+                        <option>Most Popular</option>
+
+                        <option>Newest</option>
+
+                        <option>Highest Rated</option>
+
+                    </select>
+
+                </div>
+
+                <div class="cards">
+                    <!-- CARD 1 -->
+
+                    <div class="card">
+
+                        <div class="discount">-44%</div>
+
+                        <img src="../photo/database.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Backend</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+                                Database Management Fundamentals:
+                                From Basics to Advanced SQL
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 1.jpg" alt="">
+
+                                <span>Dr/Osama Mokhtar</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+                                <span>(2)</span>
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>2 hrs 40 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>8</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$499</h2>
+
+                                    <del>$699</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 2 -->
+
+                    <div class="card">
+
+                        <div class="discount">-18%</div>
+
+                        <img src="../photo/Python.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Backend</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+                                Python Programming Fundamentals:
+                                From Zero to Practical Coding
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 2.jpg" alt="">
+
+                                <span>Rabie Mohammed</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>2 hrs 35 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>8</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$699</h2>
+
+                                    <del>$850</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 3 -->
+
+                    <div class="card">
+
+                        <div class="discount">-60%</div>
+
+                        <img src="../photo/react.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Frontend</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+
+                                Advanced React Development:
+                                From Fundamentals to Production
+
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="/photo/inst 3.jpg" alt="">
+
+                                <span>Ashraf Khalaf</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>4 hrs 20 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>6</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$199</h2>
+
+                                    <del>$499</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 4 -->
+
+                    <div class="card">
+
+                        <div class="discount">-50%</div>
+
+                        <img src="../photo/devops.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>DevOps</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+
+                                DevOps Essentials:
+                                Automating Software Delivery
+
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 4.jpg" alt="">
+
+                                <span>Ashraf Khalaf</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>3 hrs 40 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>6</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$399</h2>
+
+                                    <del>$999</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 5 -->
+
+                    <div class="card">
+
+                        <div class="discount">-22%</div>
+
+                        <img src="../photo/cyber security.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Cyber Security</span>
+
+                                <span>Beginner</span>
+
+                            </div>
+
+                            <h3>
+
+                                Cyber Security Fundamentals:
+                                Protecting Digital Assets
+
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 1.jpg" alt="">
+
+                                <span>Ahmed Fathy</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>3 hrs 40 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>6</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$699</h2>
+
+                                    <del>$899</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- CARD 6 -->
+
+                    <div class="card">
+
+                        <div class="discount">-44%</div>
+
+                        <img src="../photo/react.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Backend</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+                                PHP Web Development Masterclass:
+                                Building Dynamic Websites
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 2.jpg" alt="">
+
+                                <span>Dr/Ali Mohamed</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>3 hrs 45 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>6</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$499</h2>
+
+                                    <del>$699</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 7 -->
+
+                    <div class="card">
+
+                        <div class="discount">-18%</div>
+
+                        <img src="../photo/database.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Backend</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+                                Data Structures and Algorithms:
+                                Foundations of Efficient Programming
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 3.jpg" alt="">
+
+                                <span>Dr/Ahmed Ali</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>2 hrs 50 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>5</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$899</h2>
+
+                                    <del>$1099</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 8 -->
+
+                    <div class="card">
+
+                        <div class="discount">-42%</div>
+
+                        <img src="../photo/devops.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>DevOps</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+                                Cisco Certified Network Associate
+                                Complete Course
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 4.jpg" alt="">
+
+                                <span>Dr/Osama Mokhtar</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>2 hrs 40 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>3</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$349</h2>
+
+                                    <del>$599</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARD 9 -->
+
+                    <div class="card">
+
+                        <div class="discount">-30%</div>
+
+                        <img src="../photo/feat.jpg" alt="">
+
+                        <div class="card-body">
+
+                            <div class="tags">
+
+                                <span>Machine Learning</span>
+
+                                <span>Advanced</span>
+
+                            </div>
+
+                            <h3>
+                                Artificial Intelligence Fundamentals:
+                                From Concepts to Real Applications
+                            </h3>
+
+                            <div class="teacher">
+
+                                <img src="../photo/inst 1.jpg" alt="">
+
+                                <span>Mona Abdelaziz</span>
+
+                            </div>
+
+                            <div class="rating">
+
+                                ⭐⭐⭐⭐⭐
+
+                            </div>
+
+                            <div class="info">
+
+                                <span><i class="fa-regular fa-clock"></i>4 hrs 49 min</span>
+
+                                <span><i class="fa-regular fa-user"></i>3</span>
+
+                            </div>
+
+                            <div class="price">
+
+                                <div>
+
+                                    <h2>$2099</h2>
+
+                                    <del>$2999</del>
+
+                                </div>
+
+                                <button>Add</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Pagination -->
+
+                <div class="pagination">
+
+                    <span>Showing 1-9 of 10 results</span>
+
+                    <button class="active">1</button>
+
+                    <button>2</button>
+
+                    <button><i class="fa-solid fa-angle-right"></i></button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+    <!--================ FOOTER =================-->
+
+    <footer class="footer" id="footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-box about">
+
+                <div class="logo">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    <h2>EDU Manage</h2>
+
+                </div>
+
+                <p>
+                    A complete learning platform with top courses and
+                    instructors to help you grow your skills and
+                    reach your career goals.
+                </p>
+
+                <div class="social">
+
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+
+                    <a href="#"><i class="fab fa-x-twitter"></i></a>
+
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+
+                </div>
+
+            </div>
+
+            <div class="footer-box">
+
+                <h3>Platform</h3>
+
+                <ul>
+
+                    <li><a href="~/Home">Home</a></li>
+
+                    <li><a href="#"> Courses</a></li>
+
+                    <li><a href="~/Instructor/Dashboard">Instructor</a></li>
+
+                    <li><a href="~/Courses/Browse#footer">About</a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="footer-box">
+
+                <h3>Support</h3>
+
+                <ul>
+
+                    <li><a href="#">Help Center</a></li>
+
+                    <li><a href="#">Refund Policy</a></li>
+
+                    <li><a href="#">Terms Of Use</a></li>
+
+                    <li><a href="#">Privacy Policy</a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="footer-box">
+
+                <h3>Contact</h3>
+
+                <ul>
+
+                    <li>
+                        <i class="fa-regular fa-envelope"></i>
+                        support@edumanage.com
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        +20 100 000 0000
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-location-dot"></i>
+                        Beni Suef, Egypt
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+                    © 2026 EDU Manage. All Rights Reserved.
+                </p>
+
+                <div class="bottom-links">
+
+                    <a href="#">Terms & Conditions</a>
+
+                    <a href="#">Privacy</a>
+
+                    <a href="#">Sitemap</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
