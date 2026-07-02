@@ -1,7 +1,10 @@
+using AutoMapper;
 using EduManage.Application.DTOs.System;
 using EduManage.Application.Interfaces;
+using EduManage.Application.Mappings;
 using EduManage.Application.Services.Auth;
 using EduManage.Application.Services.Courses;
+using EduManage.Application.Services.Enrollment;
 using EduManage.Application.Services.Financial;
 using EduManage.Application.Services.System;
 using EduManage.Core.Entities;
@@ -18,14 +21,13 @@ namespace EduManage.Web
     {
         public static async Task Main(string[] args)
         {
-            // Program.cs
             var builder = WebApplication.CreateBuilder(args);
 
-            // ── Database ─────────────────────────────────────────────
+            // ── 1. Database ─────────────────────────────────────────────
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // ── Identity ─────────────────────────────────────────────
+            // ── 2. Identity ─────────────────────────────────────────────
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -39,43 +41,59 @@ namespace EduManage.Web
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-            // ── Services ─────────────────────────────────────────────
-            // عضو 2 هيضيف هنا:
+            // Auth & Courses
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
-            // عضو 3 هيضيف هنا:
+            // Financial & Orders
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IWalletService, WalletService>();
+
+            // System & Utilities
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<SearchService, SearchService>();
-
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<CourseMappingProfile>();
+            });
+
             builder.Services.AddControllersWithViews();
 
-            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
-            builder.Services.AddScoped<IPhotoService, PhotoService>();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.SlidingExpiration = true;
+            });
 
             var app = builder.Build();
 
-            // ── Seed ─────────────────────────────────────────────────
+            // ── 8. Data Seeding ─────────────────────────────────────────
             await DbInitializer.SeedAsync(app.Services);
 
-            // ── Middleware ───────────────────────────────────────────
+            // ── 9. Middleware Pipeline ──────────────────────────────────
             if (!app.Environment.IsDevelopment())
+            {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // ── Areas ────────────────────────────────────────────────
-            app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+            // ── 10. Routing Configuration
 
             app.MapControllerRoute(
                 name: "default",

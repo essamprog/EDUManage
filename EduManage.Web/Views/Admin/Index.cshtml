@@ -1,0 +1,152 @@
+﻿@using EduManage.Core.Entities
+@using EduManage.Core.Enums
+@{
+    ViewData["Title"] = "Admin Dashboard"; Layout = "_Layout";
+}
+
+<div class="container-fluid py-4">
+
+    <h4 class="fw-bold mb-4">
+        <i class="bi bi-speedometer2 me-2 text-primary"></i>Admin Dashboard
+    </h4>
+
+    @if ((int)(ViewData["PendingCourses"] ?? 0) > 0)
+    {
+        <div class="alert alert-warning d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span>
+                <strong>@ViewData["PendingCourses"]</strong> course(s) pending review.
+                <a asp-area="Admin" asp-controller="Courses" asp-action="Pending"
+                   class="alert-link ms-1">Review now</a>
+            </span>
+        </div>
+    }
+
+    @if ((int)(ViewData["PendingWithdrawals"] ?? 0) > 0)
+    {
+        <div class="alert alert-info d-flex align-items-center gap-2">
+            <i class="bi bi-cash-coin"></i>
+            <span>
+                <strong>@ViewData["PendingWithdrawals"]</strong> withdrawal request(s) pending.
+                <a asp-area="Admin" asp-controller="Finance" asp-action="Index"
+                   class="alert-link ms-1">Review now</a>
+            </span>
+        </div>
+    }
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm p-3 text-center">
+                <div class="fs-2 fw-bold text-primary">@ViewData["TotalUsers"]</div>
+                <div class="text-muted small"><i class="bi bi-people me-1"></i>Total Users</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm p-3 text-center">
+                <div class="fs-2 fw-bold text-success">@ViewData["TotalCourses"]</div>
+                <div class="text-muted small"><i class="bi bi-grid me-1"></i>Total Courses</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm p-3 text-center">
+                <div class="fs-2 fw-bold text-info">@ViewData["TotalEnrollments"]</div>
+                <div class="text-muted small"><i class="bi bi-journal-check me-1"></i>Enrollments</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm p-3 text-center">
+                <div class="fs-2 fw-bold text-warning">
+                    @((ViewData["TotalRevenue"] as decimal?)?.ToString("N0")) EGP
+                </div>
+                <div class="text-muted small"><i class="bi bi-cash me-1"></i>Total Revenue</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+                   class="card border-0 shadow-sm p-3 text-decoration-none text-dark d-flex flex-row align-items-center gap-3">
+                <div class="bg-primary bg-opacity-10 rounded p-2">
+                    <i class="bi bi-people fs-4 text-primary"></i>
+                </div>
+                <div>
+                    <div class="fw-bold">Manage Users</div>
+                    <div class="text-muted small">Ban, promote, delete</div>
+                </div>
+                <i class="bi bi-chevron-left ms-auto text-muted"></i>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-area="Admin" asp-controller="Courses" asp-action="Pending"
+                   class="card border-0 shadow-sm p-3 text-decoration-none text-dark d-flex flex-row align-items-center gap-3">
+                <div class="bg-warning bg-opacity-10 rounded p-2">
+                    <i class="bi bi-hourglass-split fs-4 text-warning"></i>
+                </div>
+                <div>
+                    <div class="fw-bold">Pending Courses</div>
+                    <div class="text-muted small">Approve or reject</div>
+                </div>
+                <i class="bi bi-chevron-left ms-auto text-muted"></i>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-area="Admin" asp-controller="Finance" asp-action="Index"
+                   class="card border-0 shadow-sm p-3 text-decoration-none text-dark d-flex flex-row align-items-center gap-3">
+                <div class="bg-success bg-opacity-10 rounded p-2">
+                    <i class="bi bi-wallet2 fs-4 text-success"></i>
+                </div>
+                <div>
+                    <div class="fw-bold">Finance</div>
+                    <div class="text-muted small">Withdrawals & revenue</div>
+                </div>
+                <i class="bi bi-chevron-left ms-auto text-muted"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 pt-3">
+            <h6 class="fw-bold mb-0">Recent Orders (Last 7 days)</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Student ID</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in ViewData["RecentOrders"] as IEnumerable<Order> ?? [])
+                        {
+                            <tr>
+                                <td class="small text-muted">#@order.Id</td>
+                                <td class="small">@order.StudentId</td>
+                                <td class="fw-bold small">@order.TotalAmount.ToString("N0") EGP</td>
+                                <td class="small">@order.PaymentMethod</td>
+                                <td>
+                                    <span class="badge @(order.Status == OrderStatus.Completed ? "bg-success" :
+                                                                                                                                                                                         order.Status == OrderStatus.Pending ? "bg-warning text-dark" :
+                                                                                                                                                                                         "bg-danger")">
+                                        @order.Status
+                                    </span>
+                                </td>
+                                <td class="small text-muted">@order.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

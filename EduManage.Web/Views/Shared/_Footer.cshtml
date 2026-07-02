@@ -1,20 +1,24 @@
-﻿<footer class="bg-dark text-light py-4 mt-auto" dir="ltr">
-    <div class="container text-center">
-        <div class="mb-3 d-flex justify-content-center gap-4">
-            <a href="#" class="text-light text-decoration-none hover-primary">About the platform</a>
-            <a asp-controller="Home" asp-action="Privacy" class="text-light text-decoration-none hover-primary">privacy policy</a>
-            <a href="#" class="text-light text-decoration-none hover-primary">Contact us</a>
-        </div>
-        
-        <div class="small text-muted">
-            &copy; @DateTime.Now.Year - EduManage educational platform. All rights reserved.
+﻿<footer class="bg-dark text-white mt-5 py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="fw-bold">
+                    <i class="bi bi-mortarboard-fill me-1"></i> EduManage
+                </h5>
+                <p class="text-muted small">An integrated learning platform to develop your skills.</p>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li><a class="text-muted text-decoration-none" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a class="text-muted text-decoration-none" asp-controller="Courses" asp-action="Index">Courses</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <p class="text-muted small mb-0">
+                    © @DateTime.Now.Year EduManage — All rights reserved.
+                </p>
+            </div>
         </div>
     </div>
 </footer>
-
-<style>
-    .hover-primary:hover {
-        color: #0d6efd !important;
-        transition: color 0.3s ease;
-    }
-</style>

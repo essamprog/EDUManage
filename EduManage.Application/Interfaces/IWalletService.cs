@@ -9,5 +9,5 @@ public interface IWalletService
 {
     Task<WalletDto> GetWalletAsync(int instructorId);
     Task ProcessSaleAsync(int instructorId, int orderItemId, decimal grossAmount);
-    Task<bool> RequestWithdrawalAsync(int instructorId, WithdrawalRequestDto dto);
+    Task<bool> RequestWithdrawalAsync(int instructorId, WithdrawalDto dto);
 }

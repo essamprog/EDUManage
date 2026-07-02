@@ -1,62 +1,59 @@
 ﻿using EduManage.Application.DTOs.Courses;
 using EduManage.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+using EduManage.Core.Enums;
+using EduManage.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
+namespace EduManage.Web.Controllers;
 
-namespace EduManage.Web.Controllers
+public class CoursesController : Controller
 {
-    public class CoursesController : Controller
+    private readonly ICourseService _courseService;
+    private readonly IUnitOfWork _uow;
+
+    public CoursesController(ICourseService courseService, IUnitOfWork uow)
     {
-        private readonly IPhotoService _photoService;
-        // المفروض هنا بنحقن كمان الـ ICourseService عشان نحفظ في الداتا بيز
+        _courseService = courseService;
+        _uow = uow;
+    }
 
-        public CoursesController(IPhotoService photoService)
+    // ── Browse ────────────────────────────────────────────
+    public async Task<IActionResult> Index(
+        string? search,
+        int? categoryId,
+        string? level,
+        string sortBy = "newest",
+        int page = 1)
+    {
+        var filter = new CourseFilterDto
         {
-            _photoService = photoService;
-        }
+            Search = search,
+            CategoryId = categoryId,
+            SortBy = sortBy,
+            Page = page,
+            PageSize = 12,
+        };
 
-        // 1. الدالة دي بتعرض شاشة إضافة الكورس
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        if (Enum.TryParse<CourseLevel>(level, out var parsedLevel))
+            filter.Level = parsedLevel;
 
-        // 2. الدالة دي بتستقبل البيانات من الشاشة لما المستخدم يضغط "حفظ"
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateCourseDto dto, IFormFile imageFile)
-        {
-            // التأكد إن المستخدم رفع صورة فعلاً
-            if (imageFile == null || imageFile.Length == 0)
-            {
-                ModelState.AddModelError("", "Please upload the course cover image.");
-                return View(dto);
-            }
+        var result = await _courseService.GetAllAsync(filter);
 
-            try
-            {
-                // 🔥 سطر السحر: رفع الصورة على Cloudinary
-                var photoResult = await _photoService.AddPhotoAsync(imageFile);
+        // بيانات الـ Sidebar
+        ViewData["Categories"] = await _uow.Categories.GetAllAsync();
+        ViewData["Search"] = search;
+        ViewData["CategoryId"] = categoryId;
+        ViewData["Level"] = level;
+        ViewData["SortBy"] = sortBy;
 
-                // ربط الرابط اللي رجع من كلاوديناري بالـ DTO عشان يتحفظ في الداتا بيز
-                dto.ThumbnailUrl = photoResult.Url;
+        return View(result);
+    }
 
-                // لو عامل حقل PublicId في الـ DTO عشان تقدر تمسح الصورة بعدين، ضيف السطر ده:
-                // dto.PublicId = photoResult.PublicId; 
-
-                // هنا المفروض بتنادي الـ Service بتاعتك عشان تحفظ الكورس النهائي في الداتا بيز
-                // await _courseService.CreateAsync(dto);
-
-                TempData["Success"] = "The course and image have been successfully uploaded!";
-                return RedirectToAction("Index", "Home");
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError("", $"There was a problem during uploading: {ex.Message}");
-                return View(dto);
-            }
-        }
+    // ── Details ───────────────────────────────────────────
+    public async Task<IActionResult> Details(int id)
+    {
+        var course = await _courseService.GetByIdAsync(id);
+        if (course is null) return NotFound();
+        return View(course);
     }
 }

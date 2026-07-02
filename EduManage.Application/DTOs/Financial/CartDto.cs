@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
+﻿namespace EduManage.Application.DTOs.Financial;
 
-namespace EduManage.Application.DTOs.Financial
+public class CartDto
 {
-    public class CartDto
-    {
-        public int StudentId { get; set; }
-        public decimal TotalPrice { get; set; }
-        public List<int> CourseIds { get; set; } = new();
-        public List<CartItemDto> Items { get; set; } = [];
-    }
+    public IEnumerable<CartItemDto> Items { get; set; } = [];
+    public decimal TotalPrice { get; set; }
+    public decimal Discount { get; set; } = 0;
+    public decimal FinalPrice => TotalPrice - Discount;
 }

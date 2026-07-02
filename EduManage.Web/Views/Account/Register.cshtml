@@ -1,0 +1,75 @@
+﻿@model RegisterDto
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h4 class="card-title text-center fw-bold mb-1">
+                        <i class="bi bi-mortarboard-fill text-primary me-1"></i>EduManage
+                    </h4>
+                    <p class="text-center text-muted mb-4">Create your account for free</p>
+
+                    @if (!string.IsNullOrEmpty(ViewData["Error"] as string))
+                    {
+                        <div class="alert alert-danger">@ViewData["Error"]</div>
+                    }
+
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input asp-for="FullName" class="form-control" placeholder="John Doe" />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input asp-for="Email" class="form-control" placeholder="example@email.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input asp-for="Password" type="password" class="form-control"
+                                       placeholder="At least 8 characters" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                            <div class="form-text">Must contain at least one uppercase letter and one number.</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-plus me-1"></i>Create Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr />
+                    <p class="text-center mb-0 small">
+                        Already have an account?
+                        <a asp-action="Login" class="text-decoration-none fw-bold">Login</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

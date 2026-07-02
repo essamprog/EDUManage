@@ -1,0 +1,102 @@
+﻿@using EduManage.Application.DTOs.Courses
+@using EduManage.Core.Entities
+@model CreateCourseDto
+@{
+    ViewData["Title"] = "Create New Course"; Layout = "_Layout";
+}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <a asp-area="Instructor" asp-controller="Courses" asp-action="Index"
+                       class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <h5 class="fw-bold mb-0">Create New Course</h5>
+            </div>
+
+            @if (ViewData["Error"] is string error)
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-1"></i>@error
+                </div>
+            }
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">Course Title *</label>
+                            <input asp-for="Title" class="form-control"
+                                   placeholder="Example: Learn Python from Scratch" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Subtitle" class="form-label fw-bold">Subtitle</label>
+                            <input asp-for="Subtitle" class="form-control"
+                                   placeholder="A brief description that appears below the main title" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">Course Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="5"
+                                      placeholder="Explain what the student will learn in this course..."></textarea>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="CategoryId" class="form-label fw-bold">Category</label>
+                                <select asp-for="CategoryId" class="form-select">
+                                    <option value="">Select Category</option>
+                                    @foreach (var cat in ViewData["Categories"] as IEnumerable<Category> ?? [])
+                                    {
+                                        <option value="@cat.Id">@cat.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Level" class="form-label fw-bold">Level</label>
+                                <select asp-for="Level" class="form-select">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Price" class="form-label fw-bold">Price (EGP)</label>
+                                <input asp-for="Price" type="number" class="form-control"
+                                       placeholder="0" min="0" />
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Language" class="form-label fw-bold">Course Language</label>
+                            <select asp-for="Language" class="form-select">
+                                <option value="Arabic">Arabic</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-plus-circle me-1"></i>Create Course
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
