@@ -1,8 +1,7 @@
-﻿@using EduManage.Application.DTOs.Courses
+@using EduManage.Application.DTOs.Courses
 @model IEnumerable<EnrollmentDto>
 @{
-    ViewData["Title"] = "My Courses"; Layout = "_Layout";
-}
+    ViewData["Title"] = "My Courses"; }
 
 <div class="container py-4">
 
@@ -66,8 +65,7 @@
                             </div>
 
                             <div class="mt-auto d-grid">
-                                <a asp-area="Student"
-                                       asp-controller="Learn"
+                                <a asp-controller="Learn"
                                        asp-action="Index"
                                        asp-route-courseId="@enrollment.CourseId"
                                        class="btn @(enrollment.Progress == 0 ? "btn-primary" : "btn-outline-primary") btn-sm">

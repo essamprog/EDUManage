@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EduManage.Application.DTOs.Courses;
 using EduManage.Application.DTOs.Financial;
 using EduManage.Core.Entities;
@@ -9,6 +9,12 @@ public class CourseMappingProfile : Profile
 {
     public CourseMappingProfile()
     {
+        // Course → UpdateCourseDto (للـ Edit)
+        CreateMap<Course, UpdateCourseDto>().ReverseMap();
+        
+        CreateMap<CourseSection, CourseSectionDto>();
+        CreateMap<CourseLesson, CourseLessonDto>();
+
         // Course → CourseDto
         CreateMap<Course, CourseDto>()
             .ForMember(d => d.InstructorName,

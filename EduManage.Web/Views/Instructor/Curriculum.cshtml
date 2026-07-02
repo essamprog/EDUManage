@@ -1,0 +1,218 @@
+@using EduManage.Application.DTOs.Courses
+@model CourseDto
+@{
+    ViewData["Title"] = "Course Curriculum - Step 2";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <a asp-action="Courses" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <h5 class="fw-bold mb-0">Step 2 of 3: Curriculum for "@Model.Title"</h5>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold m-0">Course Sections</h5>
+                        <button class="btn btn-primary btn-sm" onclick="showAddSectionModal()">
+                            <i class="bi bi-plus-circle"></i> Add Section
+                        </button>
+                    </div>
+
+                    <div id="sections-container">
+                        @if (!Model.Sections.Any())
+                        {
+                            <div class="alert alert-info text-center" id="no-sections-msg">
+                                No sections added yet. Click "Add Section" to begin.
+                            </div>
+                        }
+                        @foreach (var courseSection in Model.Sections)
+                        {
+                            <div class="card mb-3 border bg-light">
+                                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 fw-bold">@courseSection.Title</h6>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="showAddLessonModal(@courseSection.Id, '@courseSection.Title')">
+                                        <i class="bi bi-plus"></i> Add Lesson
+                                    </button>
+                                </div>
+                                <div class="card-body bg-white">
+                                    @if (!courseSection.Lessons.Any())
+                                    {
+                                        <p class="text-muted small m-0" id="no-lesson-@courseSection.Id">No lessons in this section.</p>
+                                    }
+                                    <ul class="list-group list-group-flush" id="lessons-list-@courseSection.Id">
+                                        @foreach (var lesson in courseSection.Lessons)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                                <span><i class="bi bi-play-circle me-2 text-primary"></i>@lesson.Title</span>
+                                                <span class="badge bg-secondary">@lesson.DurationMinutes min</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-action="MediaAndPublish" asp-route-id="@Model.Id" class="btn btn-primary px-4">
+                    Save & Continue to Media <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Section Modal -->
+<div class="modal fade" id="addSectionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" id="sectionTitle" class="form-control" placeholder="e.g. Introduction">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitSection()">Save Section</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Lesson Modal -->
+<div class="modal fade" id="addLessonModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Lesson to <span id="modalSectionTitle" class="text-primary"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modalSectionId" />
+                <div class="mb-3">
+                    <label class="form-label">Lesson Title</label>
+                    <input type="text" id="lessonTitle" class="form-control" placeholder="e.g. Welcome Video">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Video File</label>
+                    <input type="file" id="lessonVideo" class="form-control" accept="video/mp4,video/x-m4v,video/*">
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="isFreePreview">
+                    <label class="form-check-label" for="isFreePreview">
+                        Free Preview (Available before purchase)
+                    </label>
+                </div>
+                
+                <div class="progress d-none" id="uploadProgress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">Uploading... Please wait</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCancelLesson">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitLesson()" id="btnSaveLesson">Upload & Save Lesson</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const courseId = @Model.Id;
+
+        function showAddSectionModal() {
+            document.getElementById('sectionTitle').value = '';
+            new bootstrap.Modal(document.getElementById('addSectionModal')).show();
+        }
+
+        async function submitSection() {
+            const title = document.getElementById('sectionTitle').value;
+            if(!title) return alert('Title is required');
+
+            const formData = new FormData();
+            formData.append('courseId', courseId);
+            formData.append('title', title);
+
+            try {
+                const res = await fetch('/Instructor/AddSection', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if(data.success) {
+                    location.reload(); 
+                }
+            } catch (err) {
+                alert('Error adding section');
+            }
+        }
+
+        function showAddLessonModal(sectionId, sectionTitle) {
+            document.getElementById('modalSectionId').value = sectionId;
+            document.getElementById('modalSectionTitle').innerText = sectionTitle;
+            document.getElementById('lessonTitle').value = '';
+            document.getElementById('lessonVideo').value = '';
+            document.getElementById('isFreePreview').checked = false;
+            
+            document.getElementById('uploadProgress').classList.add('d-none');
+            document.getElementById('btnSaveLesson').disabled = false;
+            document.getElementById('btnCancelLesson').disabled = false;
+
+            new bootstrap.Modal(document.getElementById('addLessonModal')).show();
+        }
+
+        async function submitLesson() {
+            const sectionId = document.getElementById('modalSectionId').value;
+            const title = document.getElementById('lessonTitle').value;
+            const videoFileInput = document.getElementById('lessonVideo');
+            const isFreePreview = document.getElementById('isFreePreview').checked;
+
+            if(!title || !videoFileInput.files.length) return alert('Title and Video file are required');
+
+            const formData = new FormData();
+            formData.append('sectionId', sectionId);
+            formData.append('title', title);
+            formData.append('videoFile', videoFileInput.files[0]);
+            formData.append('isFreePreview', isFreePreview);
+
+            document.getElementById('uploadProgress').classList.remove('d-none');
+            document.getElementById('btnSaveLesson').disabled = true;
+            document.getElementById('btnCancelLesson').disabled = true;
+
+            try {
+                const res = await fetch('/Instructor/AddLesson', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if(data.success) {
+                    location.reload();
+                } else {
+                    alert('Upload failed');
+                    resetLessonModal();
+                }
+            } catch (err) {
+                alert('An error occurred during upload. Please try again.');
+                resetLessonModal();
+            }
+        }
+        
+        function resetLessonModal() {
+            document.getElementById('uploadProgress').classList.add('d-none');
+            document.getElementById('btnSaveLesson').disabled = false;
+            document.getElementById('btnCancelLesson').disabled = false;
+        }
+    </script>
+}

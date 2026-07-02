@@ -1,4 +1,4 @@
-﻿// Application/Services/Courses/CourseService.cs
+// Application/Services/Courses/CourseService.cs
 using AutoMapper;
 using EduManage.Application.DTOs.Common;
 using EduManage.Application.DTOs.Courses;
@@ -57,6 +57,15 @@ public class CourseService : ICourseService
     public async Task<CourseDto?> GetByIdAsync(int id)
     {
         var course = await _uow.Courses.GetByIdAsync(id);
+        if (course != null)
+        {
+            // Eager load sections and lessons manually for DTO mapping
+            course.Sections = (await _uow.CourseSections.FindAsync(s => s.CourseId == id)).OrderBy(s => s.OrderIndex).ToList();
+            foreach (var section in course.Sections)
+            {
+                section.Lessons = (await _uow.CourseLessons.FindAsync(l => l.SectionId == section.Id)).OrderBy(l => l.OrderIndex).ToList();
+            }
+        }
         return course is null ? null : _mapper.Map<CourseDto>(course);
     }
 
@@ -116,8 +125,77 @@ public class CourseService : ICourseService
         return _mapper.Map<IEnumerable<CourseDto>>(courses);
     }
 
-    public Task<IEnumerable<CourseDto>> GetByInstructorAsync(int instructorId)
+    public async Task<IEnumerable<CourseDto>> GetByInstructorAsync(int instructorId)
     {
-        throw new NotImplementedException();
+        var courses = await _uow.Courses.FindAsync(c => c.InstructorId == instructorId);
+        var ordered = courses.OrderByDescending(c => c.CreatedAt);
+        return _mapper.Map<IEnumerable<CourseDto>>(ordered);
+    }
+
+    // --- CURRICULUM & MEDIA --- //
+
+    public async Task<CourseSectionDto> AddSectionAsync(int courseId, string title)
+    {
+        var section = new CourseSection
+        {
+            CourseId = courseId,
+            Title = title,
+            OrderIndex = await _uow.CourseSections.CountAsync(s => s.CourseId == courseId) + 1
+        };
+
+        await _uow.CourseSections.AddAsync(section);
+        await _uow.SaveChangesAsync();
+
+        return _mapper.Map<CourseSectionDto>(section);
+    }
+
+    public async Task<CourseLessonDto> AddLessonAsync(int sectionId, CreateLessonDto dto)
+    {
+        var lesson = new CourseLesson
+        {
+            SectionId = sectionId,
+            Title = dto.Title,
+            VideoPath = dto.VideoPath,
+            VideoKey = dto.VideoKey,
+            DurationMinutes = dto.DurationMinutes,
+            IsFreePreview = dto.IsFreePreview,
+            Status = LessonStatus.Published,
+            OrderIndex = await _uow.CourseLessons.CountAsync(l => l.SectionId == sectionId) + 1
+        };
+
+        await _uow.CourseLessons.AddAsync(lesson);
+        
+        // Update Course Total Duration & Lessons
+        var section = await _uow.CourseSections.GetByIdAsync(sectionId);
+        if (section != null)
+        {
+            var course = await _uow.Courses.GetByIdAsync(section.CourseId);
+            if (course != null)
+            {
+                course.TotalDuration += (dto.DurationMinutes * 60); // Save as seconds
+                course.TotalLessons += 1;
+                _uow.Courses.Update(course);
+            }
+        }
+
+        await _uow.SaveChangesAsync();
+        return _mapper.Map<CourseLessonDto>(lesson);
+    }
+
+    public async Task<CourseDto> UpdateMediaAsync(int courseId, string? thumbnailUrl, string? thumbnailKey, string? promoUrl, string? promoKey)
+    {
+        var course = await _uow.Courses.GetByIdAsync(courseId)
+            ?? throw new KeyNotFoundException("Course not found");
+
+        if (thumbnailUrl != null) course.ThumbnailUrl = thumbnailUrl;
+        if (thumbnailKey != null) course.ThumbnailKey = thumbnailKey;
+        if (promoUrl != null) course.PromoVideoUrl = promoUrl;
+        if (promoKey != null) course.PromoVideoKey = promoKey;
+
+        course.UpdatedAt = DateTime.UtcNow;
+        _uow.Courses.Update(course);
+        await _uow.SaveChangesAsync();
+
+        return _mapper.Map<CourseDto>(course);
     }
 }

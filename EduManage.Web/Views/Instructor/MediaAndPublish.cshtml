@@ -1,0 +1,71 @@
+@using EduManage.Application.DTOs.Courses
+@model CourseDto
+@{
+    ViewData["Title"] = "Media & Publish - Step 3";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <a asp-action="Curriculum" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <h5 class="fw-bold mb-0">Step 3 of 3: Media & Publish "@Model.Title"</h5>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Course Thumbnail</h5>
+                    <p class="text-muted small mb-4">Upload a high-quality image that represents your course. Recommended size: 1920x1080 (16:9 ratio).</p>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
+                            {
+                                <img src="@Model.ThumbnailUrl" class="img-fluid rounded border" alt="Course Thumbnail">
+                            }
+                            else
+                            {
+                                <div class="bg-light border rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <span class="text-muted"><i class="bi bi-image" style="font-size: 2rem;"></i><br>No Thumbnail</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-6 d-flex flex-column justify-content-center mt-3 mt-md-0">
+                            <form asp-action="UploadThumbnail" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="courseId" value="@Model.Id" />
+                                <div class="mb-3">
+                                    <input class="form-control" type="file" name="imageFile" accept="image/jpeg,image/png,image/webp" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-upload"></i> Upload Image
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm border-top border-success border-3">
+                <div class="card-body p-4 text-center">
+                    <h5 class="fw-bold text-success mb-3">Ready to go live?</h5>
+                    <p class="text-muted mb-4">Once published, students will be able to enroll in your course immediately.</p>
+                    
+                    <form asp-action="Publish" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success px-5 py-2 fw-bold" @(Model.Sections.Any() && !string.IsNullOrEmpty(Model.ThumbnailUrl) ? "" : "disabled")>
+                            <i class="bi bi-globe me-1"></i> Publish Course
+                        </button>
+                        @if (!Model.Sections.Any() || string.IsNullOrEmpty(Model.ThumbnailUrl))
+                        {
+                            <div class="text-danger small mt-2">You must add at least one section and a thumbnail before publishing.</div>
+                        }
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

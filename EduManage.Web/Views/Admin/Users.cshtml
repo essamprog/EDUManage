@@ -1,30 +1,15 @@
-﻿@using EduManage.Core.Entities
+@using EduManage.Core.Entities
 @using EduManage.Core.Enums
 @model IEnumerable<ApplicationUser>
 @{
-    ViewData["Title"] = "Users Management"; Layout = "_Layout";
+    ViewData["Title"] = "Users Management";
 }
 
-<div class="container-fluid py-4">
+@{
+    var userRoles = ViewData["UserRoles"] as Dictionary<int, string> ?? new();
+}
 
-    <h4 class="fw-bold mb-4">
-        <i class="bi bi-people me-2 text-primary"></i>Users Management
-    </h4>
-
-    @if (TempData["Success"] is string success)
-    {
-        <div class="alert alert-success alert-dismissible">
-            <i class="bi bi-check-circle me-1"></i>@success
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-    @if (TempData["Error"] is string error)
-    {
-        <div class="alert alert-danger alert-dismissible">
-            <i class="bi bi-exclamation-triangle me-1"></i>@error
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
+<div class="container-fluid">
 
     <!-- Search -->
     <div class="card border-0 shadow-sm mb-4">
@@ -53,6 +38,7 @@
                         <tr>
                             <th>User</th>
                             <th>Email</th>
+                            <th>Role</th>
                             <th>Joined</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Actions</th>
@@ -73,6 +59,14 @@
                                     </div>
                                 </td>
                                 <td class="small text-muted">@user.Email</td>
+                                <td>
+                                    @{
+                                        var role = userRoles.GetValueOrDefault(user.Id, "Student");
+                                        var roleClass = role == "Admin" ? "text-danger" :
+                                                        role == "Instructor" ? "text-primary" : "text-success";
+                                    }
+                                    <span class="small fw-semibold @roleClass">@role</span>
+                                </td>
                                 <td class="small text-muted">@user.CreatedAt.ToString("MMM dd, yyyy")</td>
                                 <td class="text-center">
                                     <span class="badge @(user.Status == UserStatus.Active  ? "bg-success" :

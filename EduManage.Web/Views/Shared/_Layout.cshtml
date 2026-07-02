@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8" />
@@ -14,11 +14,11 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100 bg-white">
 
     @await Html.PartialAsync("_Navbar")
 
-    <main class="flex-grow-1 py-4">
+    <main class="flex-grow-1">
         @RenderBody()
     </main>
 

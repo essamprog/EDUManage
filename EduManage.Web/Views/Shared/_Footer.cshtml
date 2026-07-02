@@ -1,24 +1,323 @@
-﻿<footer class="bg-dark text-white mt-5 py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5 class="fw-bold">
-                    <i class="bi bi-mortarboard-fill me-1"></i> EduManage
-                </h5>
-                <p class="text-muted small">An integrated learning platform to develop your skills.</p>
+<footer class="site-footer">
+
+    <!-- Top wave separator -->
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0d1b3e" />
+        </svg>
+    </div>
+
+    <div class="footer-main">
+        <div class="container">
+            <div class="footer-grid">
+
+                <!-- Brand Column -->
+                <div class="footer-brand-col">
+                    <a asp-controller="Home" asp-action="Index" class="footer-logo">
+                        <i class="bi bi-mortarboard-fill"></i>
+                        <span>Edu<strong>Manage</strong></span>
+                    </a>
+                    <p class="footer-tagline">
+                        The #1 platform for IT graduates. Hands-on courses built for the real world — accelerate your career with expert-led learning.
+                    </p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-btn" title="Twitter/X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-btn" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="social-btn" title="YouTube"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="social-btn" title="GitHub"><i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Learn Column -->
+                <div class="footer-links-col">
+                    <h6 class="footer-heading">Learn</h6>
+                    <ul class="footer-list">
+                        <li><a asp-controller="Courses" asp-action="Index">Browse Courses</a></li>
+                        <li><a asp-controller="Instructors" asp-action="Index">Our Instructors</a></li>
+                        <li><a asp-controller="Courses" asp-action="Index" asp-route-level="Beginner">Beginner Paths</a></li>
+                        <li><a asp-controller="Courses" asp-action="Index" asp-route-level="Advanced">Advanced Tracks</a></li>
+                        <li><a asp-controller="Courses" asp-action="Index" asp-route-sortBy="popular">Most Popular</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Column -->
+                <div class="footer-links-col">
+                    <h6 class="footer-heading">Company</h6>
+                    <ul class="footer-list">
+                        <li><a asp-controller="About" asp-action="Index">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Column -->
+                <div class="footer-links-col">
+                    <h6 class="footer-heading">Support</h6>
+                    <ul class="footer-list">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Settings</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter Column -->
+                <div class="footer-newsletter-col">
+                    <h6 class="footer-heading">Stay Updated</h6>
+                    <p class="footer-newsletter-text">Get the latest courses and IT news delivered to your inbox.</p>
+                    <form class="newsletter-form" onsubmit="return false;">
+                        <input type="email" placeholder="your@email.com" class="newsletter-input" />
+                        <button type="submit" class="newsletter-btn">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
+                    <div class="footer-contact-info">
+                        <p><i class="bi bi-envelope-fill"></i> support@edumanage.io</p>
+                        <p><i class="bi bi-telephone-fill"></i> +20 100 000 0000</p>
+                        <p><i class="bi bi-geo-alt-fill"></i> Cairo, Egypt</p>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-md-4">
-                <h6 class="fw-bold">Quick Links</h6>
-                <ul class="list-unstyled">
-                    <li><a class="text-muted text-decoration-none" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a class="text-muted text-decoration-none" asp-controller="Courses" asp-action="Index">Courses</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 text-md-end">
-                <p class="text-muted small mb-0">
-                    © @DateTime.Now.Year EduManage — All rights reserved.
+        </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="footer-bottom-inner">
+                <p class="footer-copy">
+                    © @DateTime.Now.Year <strong>EduManage</strong>. All rights reserved. Built with ❤️ for IT learners.
                 </p>
+                <div class="footer-badges">
+                    <span class="footer-badge"><i class="bi bi-shield-lock-fill"></i> SSL Secured</span>
+                    <span class="footer-badge"><i class="bi bi-award-fill"></i> Certified Courses</span>
+                    <span class="footer-badge"><i class="bi bi-globe"></i> Available Worldwide</span>
+                </div>
             </div>
         </div>
     </div>
 </footer>
+
+<style>
+/* ── Footer ────────────────────────────────────────────── */
+.site-footer {
+    background: #0d1b3e;
+    color: #a0aec0;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+/* Wave separator */
+.footer-wave {
+    background: #f8fafc;
+    line-height: 0;
+}
+.footer-wave svg {
+    display: block;
+    width: 100%;
+    height: 60px;
+}
+
+/* Main section */
+.footer-main { padding: 60px 0 40px; }
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    gap: 40px;
+}
+
+/* Brand */
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 16px;
+}
+.footer-logo i { color: #4299e1; font-size: 1.6rem; }
+.footer-logo strong { color: #4299e1; }
+
+.footer-tagline {
+    color: #718096;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-size: 13px;
+    max-width: 300px;
+}
+
+/* Social buttons */
+.footer-socials { display: flex; gap: 10px; }
+.social-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #a0aec0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background .2s, color .2s, border-color .2s;
+}
+.social-btn:hover {
+    background: #4299e1;
+    color: #fff;
+    border-color: #4299e1;
+}
+
+/* Links columns */
+.footer-heading {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0; margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.footer-list a {
+    color: #718096;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color .2s, padding-left .2s;
+    display: inline-block;
+}
+.footer-list a:hover {
+    color: #4299e1;
+    padding-left: 4px;
+}
+
+/* Newsletter */
+.footer-newsletter-text {
+    color: #718096;
+    font-size: 13px;
+    margin-bottom: 14px;
+    line-height: 1.6;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+}
+.newsletter-input {
+    flex: 1;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    padding: 9px 14px;
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+}
+.newsletter-input::placeholder { color: #4a5568; }
+.newsletter-input:focus { border-color: #4299e1; }
+
+.newsletter-btn {
+    background: #4299e1;
+    color: #fff;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    padding: 9px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background .2s;
+}
+.newsletter-btn:hover { background: #3182ce; }
+
+/* Contact info */
+.footer-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.footer-contact-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.footer-contact-info i { color: #4299e1; font-size: 13px; }
+
+/* Bottom bar */
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.07);
+    padding: 18px 0;
+}
+.footer-bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.footer-copy {
+    margin: 0;
+    font-size: 12px;
+    color: #4a5568;
+}
+.footer-copy strong { color: #718096; }
+
+.footer-badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #4a5568;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 999px;
+    padding: 3px 10px;
+}
+.footer-badge i { color: #4299e1; }
+
+/* ── Responsive ────────────────────────────────────────── */
+@@media (max-width: 1024px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .footer-brand-col { grid-column: 1 / -1; }
+    .footer-newsletter-col { grid-column: 1 / -1; }
+    .footer-newsletter-col .newsletter-form { max-width: 400px; }
+}
+
+@@media (max-width: 640px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .footer-brand-col,
+    .footer-newsletter-col { grid-column: 1 / -1; }
+    .footer-bottom-inner { flex-direction: column; text-align: center; }
+}
+
+@@media (max-width: 400px) {
+    .footer-grid { grid-template-columns: 1fr; }
+}
+</style>

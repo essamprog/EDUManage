@@ -1,4 +1,4 @@
-﻿@model CourseDto
+@model CourseDto
 @{
     ViewData["Title"] = Model.Title;
 }
@@ -62,7 +62,50 @@
                     <p>@Model.Description</p>
                 </div>
                 <div class="tab-pane fade" id="content">
-                    <p class="text-muted">Course content will appear here once sections are linked.</p>
+                    @if (!Model.Sections.Any())
+                    {
+                        <p class="text-muted">Course content will appear here once sections are linked.</p>
+                    }
+                    else
+                    {
+                        <div class="accordion" id="curriculumAccordion">
+                            @for (int i = 0; i < Model.Sections.Count; i++)
+                            {
+                                var courseSection = Model.Sections[i];
+                                <div class="accordion-item mb-2 border rounded">
+                                    <h2 class="accordion-header" id="heading-@courseSection.Id">
+                                        <button class="accordion-button @(i == 0 ? "" : "collapsed") fw-bold bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@courseSection.Id">
+                                            @courseSection.Title
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-@courseSection.Id" class="accordion-collapse collapse @(i == 0 ? "show" : "")" data-bs-parent="#curriculumAccordion">
+                                        <div class="accordion-body p-0">
+                                            <ul class="list-group list-group-flush">
+                                                @foreach (var lesson in courseSection.Lessons)
+                                                {
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <i class="bi bi-play-circle text-primary me-2"></i>
+                                                            @if (lesson.IsFreePreview && !string.IsNullOrEmpty(lesson.VideoPath))
+                                                            {
+                                                                <a href="#" class="text-decoration-none text-dark fw-bold" onclick="playPreview('@lesson.VideoPath', '@lesson.Title')">@lesson.Title</a>
+                                                                <span class="badge bg-success ms-2">Free Preview</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-dark">@lesson.Title</span>
+                                                            }
+                                                        </div>
+                                                        <span class="text-muted small">@lesson.DurationMinutes min</span>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
                 <div class="tab-pane fade" id="reviews">
                     <p class="text-muted">Student reviews will appear here.</p>
@@ -127,3 +170,40 @@
 
     </div>
 </div>
+
+<!-- Video Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="previewModalLabel">Free Preview</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <video id="previewVideoPlayer" class="w-100" controls controlsList="nodownload">
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const previewModalEl = document.getElementById('previewModal');
+        const previewVideoPlayer = document.getElementById('previewVideoPlayer');
+
+        function playPreview(url, title) {
+            document.getElementById('previewModalLabel').innerText = title;
+            previewVideoPlayer.src = url;
+            new bootstrap.Modal(previewModalEl).show();
+            previewVideoPlayer.play();
+        }
+
+        previewModalEl.addEventListener('hidden.bs.modal', function () {
+            previewVideoPlayer.pause();
+            previewVideoPlayer.src = '';
+        });
+    </script>
+}

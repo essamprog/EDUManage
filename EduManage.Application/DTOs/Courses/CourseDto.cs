@@ -1,4 +1,4 @@
-﻿namespace EduManage.Application.DTOs.Courses;
+namespace EduManage.Application.DTOs.Courses;
 
 public class CourseDto
 {
@@ -10,9 +10,12 @@ public class CourseDto
     public string? Description { get; set; }      // ← مضاف
     public string? ThumbnailUrl { get; set; }
     public decimal Price { get; set; }
+    public decimal? OriginalPrice { get; set; }
     public decimal AverageRating { get; set; }
     public int TotalStudents { get; set; }
     public int TotalLessons { get; set; }
+    public int TotalDuration { get; set; }
+    public int ReviewCount { get; set; }
     public string Level { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public string Language { get; set; } = string.Empty;   // ← مضاف
@@ -21,4 +24,7 @@ public class CourseDto
     public bool IsBestseller { get; set; }
     public DateTime? PublishedAt { get; set; }      // ← مضاف
     public DateTime CreatedAt { get; set; }      // ← مضاف
+
+    // Add sections for curriculum
+    public List<CourseSectionDto> Sections { get; set; } = new();
 }

@@ -1,0 +1,349 @@
+@using EduManage.Core.Entities
+@model IEnumerable<InstructorProfile>
+@{
+    ViewData["Title"] = "Instructors";
+}
+
+<div class="instructors-page">
+
+    @* ── Page Header ───────────────────────────────── *@
+    <div class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <span class="page-badge"><i class="bi bi-people-fill"></i> OUR INSTRUCTORS</span>
+                <h1 class="page-hero-title">Learn from the Best</h1>
+                <p class="page-hero-sub">
+                    Expert practitioners with real-world experience, ready to guide your IT career.
+                </p>
+
+                @* Search *@
+                <form asp-controller="Instructors" asp-action="Index" method="get" class="search-form">
+                    <div class="search-wrap">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" name="search" value="@ViewData["Search"]"
+                               placeholder="Search by name or expertise…"
+                               class="search-input" />
+                        <button type="submit" class="search-btn">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @* ── Grid ──────────────────────────────────────── *@
+    <div class="container instructors-body">
+
+        @{
+            var list = Model.ToList();
+        }
+
+        @if (!list.Any())
+        {
+            <div class="empty-state">
+                <i class="bi bi-person-x display-1 text-muted"></i>
+                <h4 class="mt-3">No instructors found</h4>
+                @if (!string.IsNullOrEmpty(ViewData["Search"] as string))
+                {
+                    <p class="text-muted">No match for "<strong>@ViewData["Search"]</strong>"</p>
+                    <a asp-action="Index" class="btn btn-outline-primary mt-2">Clear Search</a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="stats-bar">
+                <span><i class="bi bi-person-check-fill text-primary me-1"></i> <strong>@list.Count</strong> Instructors</span>
+                <span><i class="bi bi-people-fill text-success me-1"></i> <strong>@list.Sum(p => p.TotalStudents).ToString("N0")</strong> Students</span>
+                <span><i class="bi bi-star-fill text-warning me-1"></i> <strong>@(list.Any() ? list.Average(p => (double)p.AverageRating).ToString("F1") : "—")</strong> Avg Rating</span>
+            </div>
+
+            <div class="instructors-grid">
+                @foreach (var instructor in list)
+                {
+                    var name = instructor.User?.FullName ?? "Instructor";
+                    var initials = string.Join("", name.Split(' ').Take(2).Select(w => w[0]));
+                    var courseCount = instructor.Courses?.Count ?? 0;
+
+                    <div class="instructor-card">
+                        <div class="card-top">
+                            <div class="instructor-avatar">
+                                @if (!string.IsNullOrEmpty(instructor.User?.ProfilePicture))
+                                {
+                                    <img src="@instructor.User.ProfilePicture" alt="@name" />
+                                }
+                                else
+                                {
+                                    <span class="avatar-initials">@initials</span>
+                                }
+                            </div>
+                            @if (instructor.AverageRating >= 4.5m)
+                            {
+                                <span class="top-badge">⭐ Top Rated</span>
+                            }
+                        </div>
+
+                        <div class="card-body-content">
+                            <h3 class="instructor-name">@name</h3>
+
+                            @if (!string.IsNullOrEmpty(instructor.Expertise))
+                            {
+                                <p class="instructor-expertise">@instructor.Expertise</p>
+                            }
+
+                            @if (!string.IsNullOrEmpty(instructor.Bio))
+                            {
+                                <p class="instructor-bio">@instructor.Bio</p>
+                            }
+
+                            <div class="instructor-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">@courseCount</span>
+                                    <span class="stat-label">Courses</span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-item">
+                                    <span class="stat-value">@instructor.TotalStudents.ToString("N0")</span>
+                                    <span class="stat-label">Students</span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-item">
+                                    <span class="stat-value">
+                                        <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+                                        @instructor.AverageRating.ToString("F1")
+                                    </span>
+                                    <span class="stat-label">Rating</span>
+                                </div>
+                            </div>
+
+                            <a asp-controller="Courses" asp-action="Index"
+                               asp-route-instructorId="@instructor.UserId"
+                               class="view-courses-btn">
+                                View Courses <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+<style>
+/* ── Page Hero ─────────────────────────────────────── */
+.page-hero {
+    background: linear-gradient(135deg, #0a0f1e 0%, #0d1b3e 50%, #0a1628 100%);
+    padding: 60px 0 50px;
+    color: #fff;
+    text-align: center;
+}
+
+.page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(99,179,237,.4);
+    border-radius: 999px;
+    padding: 5px 16px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #90cdf4;
+    margin-bottom: 20px;
+}
+
+.page-hero-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.page-hero-sub {
+    color: #a0aec0;
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+}
+
+/* Search */
+.search-form { max-width: 520px; margin: 0 auto; }
+.search-wrap {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    padding: 6px 6px 6px 16px;
+    gap: 8px;
+}
+.search-icon { color: #90cdf4; font-size: 15px; }
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+}
+.search-input::placeholder { color: #718096; }
+.search-btn {
+    background: #4299e1;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+}
+.search-btn:hover { background: #3182ce; }
+
+/* ── Body ──────────────────────────────────────────── */
+.instructors-body { padding: 48px 0 72px; }
+
+/* Stats bar */
+.stats-bar {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+/* Grid */
+.instructors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 24px;
+}
+
+/* Card */
+.instructor-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+}
+.instructor-card:hover {
+    box-shadow: 0 10px 32px rgba(0,0,0,.10);
+    transform: translateY(-4px);
+}
+
+.card-top {
+    position: relative;
+    background: linear-gradient(135deg, #ebf8ff, #e9d8fd);
+    padding: 32px 24px 20px;
+    text-align: center;
+}
+
+.instructor-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+.instructor-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+.avatar-initials {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4299e1, #7c3aed);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.top-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: #fefce8;
+    color: #92400e;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid #fde68a;
+}
+
+.card-body-content { padding: 18px 20px 20px; }
+
+.instructor-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.instructor-expertise {
+    font-size: 12px;
+    color: #4299e1;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.instructor-bio {
+    font-size: 13px;
+    color: #718096;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.instructor-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.stat-item { text-align: center; flex: 1; }
+.stat-value { display: block; font-size: 14px; font-weight: 700; color: #1a202c; }
+.stat-label { font-size: 10px; color: #a0aec0; text-transform: uppercase; letter-spacing: .5px; }
+.stat-divider { width: 1px; height: 30px; background: #e2e8f0; flex-shrink: 0; }
+
+.view-courses-btn {
+    display: block;
+    text-align: center;
+    background: #4299e1;
+    color: #fff;
+    border-radius: 8px;
+    padding: 9px 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .2s;
+}
+.view-courses-btn:hover { background: #3182ce; color: #fff; }
+.view-courses-btn i { margin-left: 4px; }
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 80px 0;
+    color: #a0aec0;
+}
+
+@@media (max-width: 576px) {
+    .instructors-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 14px; }
+}
+</style>
+}

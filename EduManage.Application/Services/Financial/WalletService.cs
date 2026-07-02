@@ -1,4 +1,4 @@
-﻿// Application/Services/Financial/WalletService.cs
+// Application/Services/Financial/WalletService.cs
 using AutoMapper;
 using EduManage.Application.DTOs.Financial;
 using EduManage.Application.Interfaces;
@@ -28,8 +28,22 @@ public class WalletService : IWalletService
             .FindAsync(w => w.InstructorId == instructorId);
 
         var wallet = wallets.FirstOrDefault();
+
+        // إذا مفيش wallet لسه (مدرس جديد) — أنشئ واحدة فاضية تلقائياً
         if (wallet is null)
-            throw new KeyNotFoundException("Wallet not found");
+        {
+            wallet = new Wallet
+            {
+                InstructorId = instructorId,
+                AvailableBalance  = 0,
+                PendingBalance    = 0,
+                TotalWithdrawn    = 0,
+                LifetimeEarnings  = 0,
+                UpdatedAt         = DateTime.UtcNow,
+            };
+            await _uow.Wallets.AddAsync(wallet);
+            await _uow.SaveChangesAsync();
+        }
 
         return _mapper.Map<WalletDto>(wallet);
     }

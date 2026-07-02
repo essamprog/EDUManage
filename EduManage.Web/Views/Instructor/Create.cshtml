@@ -1,19 +1,18 @@
-﻿@using EduManage.Application.DTOs.Courses
+@using EduManage.Application.DTOs.Courses
 @using EduManage.Core.Entities
 @model CreateCourseDto
 @{
-    ViewData["Title"] = "Create New Course"; Layout = "_Layout";
-}
+    ViewData["Title"] = "Create New Course"; }
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
 
             <div class="d-flex align-items-center gap-3 mb-4">
-                <a asp-area="Instructor" asp-controller="Courses" asp-action="Index"
+                <a asp-action="Courses"
                        class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i>
                 </a>
-                <h5 class="fw-bold mb-0">Create New Course</h5>
+                <h5 class="fw-bold mb-0">Step 1 of 3: Basic Info</h5>
             </div>
 
             @if (ViewData["Error"] is string error)
@@ -84,9 +83,9 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-plus-circle me-1"></i>Create Course
+                                Save & Continue to Curriculum <i class="bi bi-arrow-right ms-1"></i>
                             </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <a asp-action="Courses" class="btn btn-outline-secondary px-4">Cancel</a>
                         </div>
 
                     </form>

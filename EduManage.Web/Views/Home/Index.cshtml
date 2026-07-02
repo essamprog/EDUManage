@@ -1,86 +1,497 @@
-﻿@model IEnumerable<CourseDto>
-@{
-    ViewData["Title"] = "Home"; Layout = "_Layout";
-}
+﻿
+@model IEnumerable<CourseDto>
+@using EduManage.Application.DTOs.Courses
+@{ ViewData["Title"] = "Home"; Layout = "_Layout"; }
 
-{{!-- Hero --}}
-<section class="bg-primary text-white py-5">
-    <div class="container py-3">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-5 fw-bold mb-3">Develop your skills with top instructors</h1>
-                <p class="lead mb-4">Thousands of courses in various fields — learn anytime, anywhere</p>
-                <form asp-controller="Courses" asp-action="Index" method="get">
-                    <div class="input-group input-group-lg shadow">
-                        <input class="form-control" type="search" name="search"
-                               placeholder="Search for any course..." />
-                        <button class="btn btn-warning fw-bold px-4" type="submit">
-                            <i class="bi bi-search me-1"></i>Search Now
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-6 text-center d-none d-lg-block">
-                <i class="bi bi-mortarboard-fill" style="font-size:10rem;opacity:.15"></i>
-            </div>
-        </div>
+<!-- Hero -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      THE #1 PLATFORM FOR IT GRADUATES
     </div>
+    <h1 class="hero-title">
+      Master the Skills<br />
+      <span class="hero-highlight">Industry Demands</span>
+    </h1>
+    <p class="hero-subtitle">
+      EduManage delivers hands-on IT courses built for the real world. From
+      cloud architecture to full-stack development — accelerate your career with
+      expert-led learning.
+    </p>
+    <div class="hero-actions">
+      <a asp-controller="Account" asp-action="Register" class="btn-hero-primary">
+        Get Started — It's Free <span>→</span>
+      </a>
+      <button class="btn-hero-secondary">
+        <span class="play-icon">▶</span> Watch Demo
+      </button>
+    </div>
+    <div class="hero-social-proof">
+      <div class="avatars">
+        <div class="avatar av1">AJ</div>
+        <div class="avatar av2">SR</div>
+        <div class="avatar av3">MK</div>
+        <div class="avatar av4">TL</div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <span class="proof-text">Trusted by <strong>52,000+</strong> learners</span>
+    </div>
+    <div class="topics-row">
+      <span class="topics-label">TOPICS COVERED</span>
+      <div class="topics-tags">
+        <span>React</span><span>Node.js</span><span>Python</span>
+        <span>AWS</span><span>Docker</span><span>TypeScript</span>
+        <span>Kubernetes</span><span>Machine Learning</span>
+      </div>
+    </div>
+  </div>
 </section>
 
-{{!-- Stats --}}
-<section class="border-bottom py-4">
-    <div class="container">
-        <div class="row text-center g-3">
-            <div class="col-6 col-md-3">
-                <div class="fw-bold fs-4 text-primary">+500</div>
-                <div class="text-muted small">Available Courses</div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="fw-bold fs-4 text-primary">+10K</div>
-                <div class="text-muted small">Enrolled Students</div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="fw-bold fs-4 text-primary">+100</div>
-                <div class="text-muted small">Expert Instructors</div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="fw-bold fs-4 text-primary">4.8 ⭐</div>
-                <div class="text-muted small">Average Rating</div>
-            </div>
-        </div>
+<!-- Featured Courses -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-badge">
+      <i class="bi bi-book"></i> TOP PICKS
     </div>
-</section>
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Featured Courses</h2>
+        <p class="section-sub">
+          Hand-picked by our curriculum team. Start with these and advance your
+          IT career in weeks, not years.
+        </p>
+      </div>
+      <a asp-controller="Courses" asp-action="Index" class="btn-view-all">
+        View All Courses →
+      </a>
+    </div>
 
-{{!-- Featured Courses --}}
-<section class="py-5">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">Featured Courses</h2>
-            <a asp-controller="Courses" asp-action="Index" class="btn btn-outline-primary btn-sm">
-                View All <i class="bi bi-arrow-right ms-1"></i>
-            </a>
-        </div>
-        <div class="row g-4">
-            @foreach (var course in Model)
+    <div class="courses-grid">
+      @foreach (var course in Model)
+      {
+        <div class="course-card">
+          <div class="course-thumb-wrap">
+            @if (course.Price > 0)
             {
-                <div class="col-sm-6 col-lg-4">
-                    <partial name="_CourseCard" model="course" />
-                </div>
+              <span class="discount-badge">-18%</span>
             }
+            <img src="@(course.ThumbnailUrl ?? "/images/course-default.jpg")"
+                 alt="@course.Title" class="course-thumb" />
+          </div>
+          <div class="course-body">
+            <div class="course-tags">
+              <span class="course-tag">@course.CategoryName</span>
+              <span class="course-tag">@course.Level</span>
+            </div>
+            <h3 class="course-title-text">@course.Title</h3>
+            <div class="course-instructor">
+              <div class="inst-avatar">
+                @(course.InstructorName.Length > 0 ? course.InstructorName[0].ToString() : "I")
+              </div>
+              <span>@course.InstructorName</span>
+            </div>
+            <div class="course-rating">
+              <span class="rating-num">@course.AverageRating.ToString("F0")</span>
+              <span class="stars-small">★★★★★</span>
+              <span class="rating-count">(@course.ReviewCount)</span>
+            </div>
+            <div class="course-meta">
+              <span><i class="bi bi-clock"></i> @course.TotalDuration min</span>
+              <span><i class="bi bi-people"></i> @course.TotalStudents</span>
+            </div>
+            <div class="course-footer">
+              <div class="price-wrap">
+                <span class="price-current">$@course.Price.ToString("N0")</span>
+                @if (course.OriginalPrice.HasValue && course.OriginalPrice > course.Price)
+                {
+                  <span class="price-old">$@course.OriginalPrice.Value.ToString("N0")</span>
+                }
+              </div>
+              <a asp-controller="Courses" asp-action="Details"
+                 asp-route-id="@course.Id" class="btn-enroll">
+                Enroll →
+              </a>
+            </div>
+          </div>
         </div>
+      }
     </div>
+  </div>
 </section>
 
-{{!-- CTA --}}
+<!-- CTA -->
 @if (!User.Identity?.IsAuthenticated ?? true)
 {
-    <section class="bg-light py-5">
-        <div class="container text-center">
-            <h3 class="fw-bold mb-3">Start your learning journey today</h3>
-            <p class="text-muted mb-4">Join thousands of students and develop your skills with the best instructors</p>
-            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg px-5">
-                <i class="bi bi-person-plus me-1"></i>Create a Free Account
-            </a>
-        </div>
-    </section>
+  <section class="cta-section">
+    <div class="container text-center">
+      <h3 class="fw-bold mb-3">Start your learning journey today</h3>
+      <p class="text-muted mb-4">
+        Join thousands of students and develop your skills with the best instructors
+      </p>
+      <a asp-controller="Account" asp-action="Register"
+         class="btn btn-primary btn-lg px-5">
+        <i class="bi bi-person-plus me-1"></i>Create a Free Account
+      </a>
+    </div>
+  </section>
+}
+
+@section Styles {
+<style>
+/* ── Hero ──────────────────────────────────────────────── */
+.hero-section {
+  background: linear-gradient(135deg, #0a0f1e 0%, #0d1b3e 50%, #0a1628 100%);
+  color: #fff;
+  padding: 80px 0 60px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-section .container {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(99,179,237,.4);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #90cdf4;
+  margin-bottom: 32px;
+}
+
+.badge-dot {
+  width: 7px; height: 7px;
+  background: #4299e1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.hero-highlight {
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: underline;
+  text-decoration-color: #7c3aed;
+  text-underline-offset: 6px;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #a0aec0;
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.btn-hero-primary {
+  background: #4299e1;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 15px;
+  transition: background .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-hero-primary:hover { background: #3182ce; color: #fff; }
+
+.btn-hero-secondary {
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s;
+}
+.btn-hero-secondary:hover { background: rgba(255,255,255,.15); }
+
+.play-icon {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,.15);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.hero-social-proof {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.avatars { display: flex; }
+.avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid #0d1b3e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: -8px;
+  color: #fff;
+}
+.avatar:first-child { margin-left: 0; }
+.av1 { background: #4299e1; }
+.av2 { background: #48bb78; }
+.av3 { background: #ed64a6; }
+.av4 { background: #9f7aea; }
+
+.stars { color: #f6c90e; font-size: 14px; letter-spacing: 1px; }
+.proof-text { font-size: 13px; color: #a0aec0; }
+.proof-text strong { color: #fff; }
+
+.topics-row {
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 28px;
+}
+.topics-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #718096;
+  display: block;
+  margin-bottom: 12px;
+}
+.topics-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.topics-tags span {
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 999px;
+  padding: 5px 16px;
+  font-size: 12px;
+  color: #e2e8f0;
+}
+
+/* ── Featured Courses ──────────────────────────────────── */
+.featured-section {
+  padding: 72px 0;
+  background: #f8fafc;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #4a5568;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 8px;
+}
+
+.section-sub {
+  color: #718096;
+  font-size: 14px;
+  max-width: 380px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.btn-view-all {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d3748;
+  text-decoration: none;
+  background: #fff;
+  white-space: nowrap;
+  transition: border-color .2s;
+}
+.btn-view-all:hover { border-color: #4299e1; color: #4299e1; }
+
+/* Course Cards */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.course-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+}
+.course-card:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,.1);
+  transform: translateY(-3px);
+}
+
+.course-thumb-wrap { position: relative; }
+.course-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #e53e3e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.course-body { padding: 16px; }
+
+.course-tags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.course-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: #4299e1;
+  background: #ebf8ff;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.course-title-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a202c;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.course-instructor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.inst-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #4299e1;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.course-instructor span { font-size: 13px; color: #4a5568; }
+
+.course-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.rating-num { font-size: 13px; font-weight: 700; color: #1a202c; }
+.stars-small { color: #f6c90e; font-size: 12px; }
+.rating-count { font-size: 11px; color: #718096; }
+
+.course-meta {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #718096;
+  margin-bottom: 14px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+.course-meta i { margin-right: 3px; }
+
+.course-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price-wrap { display: flex; align-items: baseline; gap: 6px; }
+.price-current { font-size: 16px; font-weight: 700; color: #1a202c; }
+.price-old { font-size: 13px; color: #a0aec0; text-decoration: line-through; }
+
+.btn-enroll {
+  color: #4299e1;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color .2s;
+}
+.btn-enroll:hover { color: #3182ce; }
+
+/* ── CTA ───────────────────────────────────────────────── */
+.cta-section { padding: 72px 0; background: #fff; }
+</style>
 }

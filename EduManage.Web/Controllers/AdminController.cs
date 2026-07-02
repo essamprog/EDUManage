@@ -1,4 +1,4 @@
-﻿using EduManage.Application.Interfaces;
+using EduManage.Application.Interfaces;
 using EduManage.Core.Entities;
 using EduManage.Core.Enums;
 using EduManage.Core.Interfaces;
@@ -52,8 +52,19 @@ public class AdminController : Controller
                 u.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
                 u.Email!.Contains(search, StringComparison.OrdinalIgnoreCase));
 
+        var userList = users.ToList();
+
+        // Fetch role for each user from real DB
+        var userRoles = new Dictionary<int, string>();
+        foreach (var u in userList)
+        {
+            var roles = await _userManager.GetRolesAsync(u);
+            userRoles[u.Id] = roles.FirstOrDefault() ?? "Student";
+        }
+
         ViewData["Search"] = search;
-        return View(users);
+        ViewData["UserRoles"] = userRoles;
+        return View(userList);
     }
 
     // POST /admin/ban

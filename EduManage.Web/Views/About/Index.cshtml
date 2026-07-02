@@ -1,0 +1,228 @@
+@{
+    ViewData["Title"] = "About Team";
+}
+
+<div class="about-page">
+
+    <!-- Page Header -->
+    <div class="about-hero">
+        <span class="about-badge">👋 OUR TEAM</span>
+        <h1 class="about-title">Meet the People Behind EduManage</h1>
+        <p class="about-sub">
+            A passionate team of developers and learners who built this platform
+            to help IT graduates accelerate their careers.
+        </p>
+    </div>
+
+    <!-- Team Cards -->
+    <div class="container team-section">
+        <div class="team-grid">
+
+            <!-- Essam Mohamed -->
+            <div class="team-card">
+                <div class="member-avatar" style="background: linear-gradient(135deg, #4299e1, #3182ce);">
+                    EM
+                </div>
+                <h3 class="member-name">Essam Mohamed</h3>
+                <p class="member-quote">
+                    "Building great software is about solving real problems for real people."
+                </p>
+                <div class="member-socials">
+                    <a href="#" class="m-social"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="m-social"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+
+            <!-- Hager Mahmoud -->
+            <div class="team-card">
+                <div class="member-avatar" style="background: linear-gradient(135deg, #9f7aea, #7c3aed);">
+                    HM
+                </div>
+                <h3 class="member-name">Hager Mahmoud</h3>
+                <p class="member-quote">
+                    "Every detail matters — great UX is invisible but always felt."
+                </p>
+                <div class="member-socials">
+                    <a href="#" class="m-social"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="m-social"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+
+            <!-- Arwa Abd Almajeed -->
+            <div class="team-card">
+                <div class="member-avatar" style="background: linear-gradient(135deg, #48bb78, #276749);">
+                    AA
+                </div>
+                <h3 class="member-name">Arwa Abd Almajeed</h3>
+                <p class="member-quote">
+                    "Clean code is not written by following rules — it comes from caring about the craft."
+                </p>
+                <div class="member-socials">
+                    <a href="#" class="m-social"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="m-social"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+
+            <!-- Kirolos Sobhy -->
+            <div class="team-card">
+                <div class="member-avatar" style="background: linear-gradient(135deg, #ed64a6, #b83280);">
+                    KS
+                </div>
+                <h3 class="member-name">Kirolos Sobhy</h3>
+                <p class="member-quote">
+                    "Technology is best when it brings people together and opens new opportunities."
+                </p>
+                <div class="member-socials">
+                    <a href="#" class="m-social"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="m-social"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom note -->
+        <div class="about-note">
+            <i class="bi bi-heart-fill text-danger me-2"></i>
+            This platform was built as a Capstone Project — DEPI × EYouth Program, 2025.
+        </div>
+    </div>
+
+</div>
+
+@section Styles {
+<style>
+
+.about-page {
+    background: #fff;
+    min-height: 100%;
+}
+
+/* ── Hero ──────────────────────────────────────── */
+.about-hero {
+    text-align: center;
+    padding: 64px 24px 48px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.about-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 5px 16px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+
+.about-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 14px;
+}
+
+.about-sub {
+    color: #718096;
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ── Team Grid ─────────────────────────────────── */
+.team-section {
+    padding: 56px 24px 80px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 28px;
+    margin-bottom: 56px;
+}
+
+/* Card */
+.team-card {
+    background: #fff;
+    border: 1px solid #e8edf2;
+    border-radius: 16px;
+    padding: 32px 24px 28px;
+    text-align: center;
+    transition: box-shadow .2s, transform .2s;
+}
+.team-card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,.08);
+    transform: translateY(-4px);
+}
+
+/* Avatar */
+.member-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 auto 18px;
+    letter-spacing: 1px;
+}
+
+/* Name */
+.member-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 12px;
+}
+
+/* Quote */
+.member-quote {
+    font-size: 13px;
+    color: #718096;
+    font-style: italic;
+    line-height: 1.65;
+    margin-bottom: 20px;
+}
+
+/* Socials */
+.member-socials { display: flex; justify-content: center; gap: 10px; }
+.m-social {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    color: #a0aec0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background .2s, color .2s, border-color .2s;
+}
+.m-social:hover {
+    background: #4299e1;
+    color: #fff;
+    border-color: #4299e1;
+}
+
+/* Bottom note */
+.about-note {
+    text-align: center;
+    font-size: 13px;
+    color: #a0aec0;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 28px;
+}
+
+@@media (max-width: 480px) {
+    .team-grid { grid-template-columns: 1fr 1fr; }
+}
+@@media (max-width: 360px) {
+    .team-grid { grid-template-columns: 1fr; }
+}
+</style>
+}
