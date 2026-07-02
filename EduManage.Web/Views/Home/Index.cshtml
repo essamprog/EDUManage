@@ -1,8 +1,86 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<CourseDto>
+@{
+    ViewData["Title"] = "Home"; Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about building Web apps with ASP.NET Core.</p>
-</div>
+{{!-- Hero --}}
+<section class="bg-primary text-white py-5">
+    <div class="container py-3">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold mb-3">Develop your skills with top instructors</h1>
+                <p class="lead mb-4">Thousands of courses in various fields — learn anytime, anywhere</p>
+                <form asp-controller="Courses" asp-action="Index" method="get">
+                    <div class="input-group input-group-lg shadow">
+                        <input class="form-control" type="search" name="search"
+                               placeholder="Search for any course..." />
+                        <button class="btn btn-warning fw-bold px-4" type="submit">
+                            <i class="bi bi-search me-1"></i>Search Now
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6 text-center d-none d-lg-block">
+                <i class="bi bi-mortarboard-fill" style="font-size:10rem;opacity:.15"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{!-- Stats --}}
+<section class="border-bottom py-4">
+    <div class="container">
+        <div class="row text-center g-3">
+            <div class="col-6 col-md-3">
+                <div class="fw-bold fs-4 text-primary">+500</div>
+                <div class="text-muted small">Available Courses</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="fw-bold fs-4 text-primary">+10K</div>
+                <div class="text-muted small">Enrolled Students</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="fw-bold fs-4 text-primary">+100</div>
+                <div class="text-muted small">Expert Instructors</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="fw-bold fs-4 text-primary">4.8 ⭐</div>
+                <div class="text-muted small">Average Rating</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{!-- Featured Courses --}}
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0">Featured Courses</h2>
+            <a asp-controller="Courses" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+        <div class="row g-4">
+            @foreach (var course in Model)
+            {
+                <div class="col-sm-6 col-lg-4">
+                    <partial name="_CourseCard" model="course" />
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+{{!-- CTA --}}
+@if (!User.Identity?.IsAuthenticated ?? true)
+{
+    <section class="bg-light py-5">
+        <div class="container text-center">
+            <h3 class="fw-bold mb-3">Start your learning journey today</h3>
+            <p class="text-muted mb-4">Join thousands of students and develop your skills with the best instructors</p>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg px-5">
+                <i class="bi bi-person-plus me-1"></i>Create a Free Account
+            </a>
+        </div>
+    </section>
+}

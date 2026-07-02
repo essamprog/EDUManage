@@ -1,25 +1,29 @@
-using EduManage.Web.Models;
+using EduManage.Application.DTOs.Courses;
+using EduManage.Application.Interfaces;
+using EduManage.Core.Enums;
+using EduManage.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
-namespace EduManage.Web.Controllers
+namespace EduManage.Web.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ICourseService _courseService;
+
+    public HomeController(ICourseService courseService)
+        => _courseService = courseService;
+
+    public async Task<IActionResult> Index()
     {
-        public IActionResult Index()
+        var featured = await _courseService.GetAllAsync(new CourseFilterDto
         {
-            return View();
-        }
+            SortBy = "popular",
+            Page = 1,
+            PageSize = 6,
+        });
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        return View(featured.Items);
     }
+
+    public IActionResult Error() => View();
 }

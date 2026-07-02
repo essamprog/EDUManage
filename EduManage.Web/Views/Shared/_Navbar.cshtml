@@ -1,0 +1,253 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+    <div class="container">
+        
+        <a class="navbar-brand fw-bold d-flex align-items-center" asp-controller="Home" asp-action="Index">
+            <i class="bi bi-mortarboard-fill text-primary fs-3 me-2"></i>
+            <span class="fs-4 text-dark">Edu<span class="text-primary">Manage</span></span>
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMain">
+
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium gap-3">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-primary" asp-controller="Instructors" asp-action="Index">Instructors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-controller="About" asp-action="Index">About Team</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav align-items-center gap-3">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary position-relative hover-icon" asp-controller="Cart" asp-action="Index">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            @if (ViewData["CartCount"] is int count && count > 0)
+                            {
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 0.65rem; margin-top: 5px;">
+                                    @count
+                                </span>
+                            }
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+    <a class="nav-link text-secondary position-relative hover-icon dropdown-toggle hide-arrow" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+        <i class="bi bi-bell fs-5"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm" style="font-size: 0.65rem; margin-top: 5px;">
+            1
+        </span>
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-end shadow border-0 notification-dropdown p-0 mt-3" aria-labelledby="notificationsDropdown">
+        
+        <div class="d-flex justify-content-between align-items-center px-3 py-3 border-bottom bg-light" style="border-radius: 12px 12px 0 0;">
+            <h6 class="mb-0 fw-bold text-dark">
+                Notifications 
+                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill ms-1 fw-normal" style="font-size: 0.7rem;">1 new</span>
+            </h6>
+            <a href="#" class="text-primary text-decoration-none" style="font-size: 0.85rem;">
+                <i class="bi bi-check2"></i> Mark all read
+            </a>
+        </div>
+
+        <div class="notification-list custom-scrollbar">
+            
+            <a href="#" class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item unread">
+                <div class="d-flex align-items-start">
+                    <span class="notification-dot bg-secondary mt-2 me-2"></span>
+                    <div class="flex-grow-1">
+                        <p class="mb-1 fw-bold text-dark fs-6 d-flex justify-content-between">
+                            Instructor Application Update ❌
+                        </p>
+                        <p class="mb-1 text-muted notification-text">
+                            Your application to become an instructor was reviewed but not approved at this time. Pleas...
+                        </p>
+                        <small class="text-muted" style="font-size: 0.75rem;">3 hours ago</small>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item">
+                <div class="d-flex align-items-start">
+                    <span class="notification-dot bg-warning mt-2 me-2" style="opacity: 0.5;"></span>
+                    <div class="flex-grow-1">
+                        <p class="mb-1 fw-bold text-dark fs-6">
+                            Course Completed! 🎓
+                        </p>
+                        <p class="mb-1 text-muted notification-text">
+                            Congratulations! You have completed "Course Java". Your certificate is now ready.
+                        </p>
+                        <small class="text-muted" style="font-size: 0.75rem;">6 days ago</small>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item">
+                <div class="d-flex align-items-start">
+                    <span class="notification-dot bg-primary mt-2 me-2" style="opacity: 0.5;"></span>
+                    <div class="flex-grow-1">
+                        <p class="mb-1 fw-bold text-dark fs-6">
+                            Purchase Successful ✅
+                        </p>
+                        <p class="mb-1 text-muted notification-text">
+                            You have successfully purchased "Database Management Fundamentals: From Basics to...
+                        </p>
+                        <small class="text-muted" style="font-size: 0.75rem;">6 days ago</small>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="text-center p-3 bg-white" style="border-radius: 0 0 12px 12px;">
+            <a asp-controller="Notifications" asp-action="Index" class="text-primary text-decoration-none fw-medium" style="font-size: 0.9rem;">
+                View all notifications <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</li>
+
+                    <li class="nav-item dropdown ms-2">
+                        <a class="nav-link p-0 d-flex align-items-center text-dark dropdown-toggle hide-arrow" href="#" data-bs-toggle="dropdown">
+                            @{
+                                var userName = User.Identity?.Name ?? "User";
+                                var firstName = userName.Split('@')[0];
+                            }
+                            <img src="https://ui-avatars.com/api/?name=@firstName&background=0D8ABC&color=fff&rounded=true" 
+                                 alt="Profile" width="40" height="40" class="rounded-circle shadow-sm" style="object-fit: cover;">
+                            <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-3" style="border-radius: 12px;">
+                            <li class="px-3 py-2">
+                                <span class="d-block fw-bold">@firstName</span>
+                                <small class="text-muted">@User.Identity?.Name</small>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-2" asp-controller="Admin" asp-action="Index">
+                                        <i class="bi bi-speedometer2 me-2 text-muted"></i> Admin Dashboard
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Instructor"))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-2" asp-controller="Instructor" asp-action="Index">
+                                        <i class="bi bi-easel me-2 text-muted"></i> Instructor Dashboard
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Student"))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-2" asp-controller="Dashboard" asp-action="Index">
+                                        <i class="bi bi-journal-bookmark me-2 text-muted"></i> My Courses
+                                    </a>
+                                </li>
+                            }
+
+                            <li><hr class="dropdown-divider" /></li>
+
+                            <li>
+                                <form asp-area="Student" asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
+                                    <button type="submit" class="dropdown-item text-danger py-2 fw-medium">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium text-dark hover-primary" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary rounded-pill px-4 ms-2 shadow-sm" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .hover-icon { transition: color 0.2s ease-in-out; }
+    .hover-icon:hover { color: #0d6efd !important; }
+    .hover-primary:hover { color: #0d6efd !important; }
+    .navbar-nav .nav-link { transition: color 0.2s ease-in-out; }
+    .navbar-nav .nav-link:hover { color: #0d6efd !important; }
+    
+    .hide-arrow::after { display: none !important; }
+
+.notification-dropdown {
+    width: 380px;
+    border-radius: 12px;
+}
+
+.notification-dropdown .text-wrap {
+    white-space: normal !important;
+}
+
+.notification-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.notification-item.unread {
+    background-color: #f8fbff;
+}
+
+.notification-list {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #4285f4;
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #2b6cb0;
+}
+</style>

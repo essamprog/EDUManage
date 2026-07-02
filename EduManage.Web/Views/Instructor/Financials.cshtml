@@ -1,0 +1,148 @@
+﻿@using EduManage.Application.DTOs.Financial
+@model WalletDto
+@{
+    ViewData["Title"] = "My Earnings"; Layout = "_Layout";
+}
+
+<div class="container py-4">
+
+    <h4 class="fw-bold mb-4">
+        <i class="bi bi-wallet2 me-2 text-primary"></i>My Earnings
+    </h4>
+
+    @if (TempData["Success"] is string success)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <i class="bi bi-check-circle me-1"></i>@success
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] is string error)
+    {
+        <div class="alert alert-danger alert-dismissible">
+            <i class="bi bi-exclamation-triangle me-1"></i>@error
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Balance Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-3 fw-bold text-success mb-1">
+                    @Model.AvailableBalance.ToString("N0") EGP
+                </div>
+                <div class="text-muted small">Available Balance</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-3 fw-bold text-warning mb-1">
+                    @Model.PendingBalance.ToString("N0") EGP
+                </div>
+                <div class="text-muted small">Pending (Hold)</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-3 fw-bold text-info mb-1">
+                    @Model.TotalWithdrawn.ToString("N0") EGP
+                </div>
+                <div class="text-muted small">Total Withdrawn</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-3 fw-bold text-primary mb-1">
+                    @Model.LifetimeEarnings.ToString("N0") EGP
+                </div>
+                <div class="text-muted small">Lifetime Earnings</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Withdrawal Form -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3">
+                    <h6 class="fw-bold mb-0">
+                        <i class="bi bi-cash-coin me-1 text-success"></i>Request Withdrawal
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Instructor" asp-action="Withdraw" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Amount (EGP)</label>
+                            <input type="number" name="Amount" class="form-control"
+                                   placeholder="0" min="50"
+                                   max="@Model.AvailableBalance" required />
+                            <div class="form-text">
+                                Min 50 EGP — Available: @Model.AvailableBalance.ToString("N0") EGP
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Method</label>
+                            <select name="Method" class="form-select" required>
+                                <option value="">Select method</option>
+                                <option value="vodafone_cash">Vodafone Cash</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="instapay">InstaPay</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Account / Phone Number</label>
+                            <input type="text" name="AccountDetail" class="form-control"
+                                   placeholder="01xxxxxxxxx" required />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success"
+                                @(Model.AvailableBalance < 50 ? "disabled" : "")>
+                                <i class="bi bi-send me-1"></i>Send Request
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pt-3">
+                    <h6 class="fw-bold mb-0">
+                        <i class="bi bi-info-circle me-1 text-primary"></i>Important Info
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 d-flex gap-2">
+                            <i class="bi bi-clock text-warning mt-1"></i>
+                            <span>Earnings stay in "Pending" for 14 days before becoming available</span>
+                        </li>
+                        <li class="mb-3 d-flex gap-2">
+                            <i class="bi bi-percent text-danger mt-1"></i>
+                            <span>Platform takes a 20% commission on every sale</span>
+                        </li>
+                        <li class="mb-3 d-flex gap-2">
+                            <i class="bi bi-calendar-check text-success mt-1"></i>
+                            <span>Withdrawal requests are processed within 2-3 business days</span>
+                        </li>
+                        <li class="d-flex gap-2">
+                            <i class="bi bi-shield-check text-primary mt-1"></i>
+                            <span>Minimum withdrawal amount is 50 EGP</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
