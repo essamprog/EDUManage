@@ -1,0 +1,129 @@
+﻿@model CourseDto
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container py-4">
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Courses" asp-action="Index">Courses</a></li>
+                    <li class="breadcrumb-item active">@Model.Title</li>
+                </ol>
+            </nav>
+
+            @if (Model.IsBestseller)
+            {
+                <span class="badge bg-warning text-dark mb-2">
+                    <i class="bi bi-star-fill me-1"></i>Bestseller
+                </span>
+            }
+
+            <h1 class="fw-bold fs-3 mb-2">@Model.Title</h1>
+            @if (!string.IsNullOrEmpty(Model.Subtitle))
+            {
+                <p class="lead text-muted">@Model.Subtitle</p>
+            }
+
+            <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+                <div class="d-flex align-items-center gap-1">
+                    <span class="fw-bold text-warning">@Model.AverageRating.ToString("F1")</span>
+                    <i class="bi bi-star-fill text-warning"></i>
+                </div>
+                <span class="text-muted small">@Model.TotalStudents Students</span>
+                <span class="badge bg-light text-dark border">@Model.Level</span>
+                <span class="text-muted small">
+                    <i class="bi bi-person me-1"></i>@Model.InstructorName
+                </span>
+                @if (!string.IsNullOrEmpty(Model.CategoryName))
+                {
+                    <span class="badge bg-primary bg-opacity-10 text-primary">@Model.CategoryName</span>
+                }
+            </div>
+
+            <ul class="nav nav-tabs mb-4" id="courseTabs">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#about">About</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#content">Content</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews">Reviews</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="about">
+                    <p>@Model.Description</p>
+                </div>
+                <div class="tab-pane fade" id="content">
+                    <p class="text-muted">Course content will appear here once sections are linked.</p>
+                </div>
+                <div class="tab-pane fade" id="reviews">
+                    <p class="text-muted">Student reviews will appear here.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow sticky-top" style="top:80px">
+
+                <img src="@(Model.ThumbnailUrl ?? "/images/course-default.jpg")"
+                     class="card-img-top rounded-top" alt="@Model.Title"
+                     style="height:200px;object-fit:cover" />
+
+                <div class="card-body">
+                    <div class="d-flex align-items-baseline gap-2 mb-3">
+                        <span class="fs-3 fw-bold text-primary">EGP @Model.Price.ToString("N0")</span>
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form asp-controller="Cart" asp-action="Add" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="courseId" value="@Model.Id" />
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-cart-plus me-1"></i>Add to Cart
+                                </button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="d-grid">
+                            <a asp-controller="Account" asp-action="Login"
+                                   class="btn btn-primary btn-lg">
+                                Login to Enroll
+                            </a>
+                        </div>
+                    }
+
+                    <hr />
+                    <ul class="list-unstyled small text-muted mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-play-circle me-2 text-primary"></i>@Model.TotalLessons Lessons
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-bar-chart me-2 text-primary"></i>Level: @Model.Level
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-translate me-2 text-primary"></i>Language: @Model.Language
+                        </li>
+                        <li>
+                            <i class="bi bi-award me-2 text-primary"></i>Certificate of Completion
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

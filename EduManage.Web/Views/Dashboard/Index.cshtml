@@ -1,0 +1,88 @@
+﻿@using EduManage.Application.DTOs.Courses
+@model IEnumerable<EnrollmentDto>
+@{
+    ViewData["Title"] = "My Courses"; Layout = "_Layout";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">
+            <i class="bi bi-journal-bookmark me-2 text-primary"></i>My Courses
+        </h4>
+        <a asp-controller="Courses" asp-action="Index" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-circle me-1"></i>Browse new courses
+        </a>
+    </div>
+
+    @if (TempData["Success"] is string success)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <i class="bi bi-check-circle me-1"></i>@success
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-journal-x display-1 text-muted"></i>
+            <h5 class="mt-3 fw-bold">You haven't enrolled in any courses yet</h5>
+            <p class="text-muted">Start your learning journey and choose from hundreds of courses</p>
+            <a asp-controller="Courses" asp-action="Index" class="btn btn-primary btn-lg mt-2">
+                <i class="bi bi-grid me-1"></i>Browse Courses
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var enrollment in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow">
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h6 class="fw-bold mb-1">@enrollment.CourseTitle</h6>
+
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <span class="badge @(enrollment.Status == "Completed" ? "bg-success" : "bg-primary") bg-opacity-10
+                                    @(enrollment.Status == "Completed" ? "text-success" : "text-primary")">
+                                    @(enrollment.Status == "Completed" ? "Completed" : "In Progress")
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+                                    <span>Progress</span>
+                                    <span class="fw-bold text-primary">@enrollment.Progress%</span>
+                                </div>
+                                <div class="progress" style="height:8px">
+                                    <div class="progress-bar bg-primary" style="width:@enrollment.Progress%"
+                                         role="progressbar" aria-valuenow="@enrollment.Progress"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                            <div class="mt-auto d-grid">
+                                <a asp-area="Student"
+                                       asp-controller="Learn"
+                                       asp-action="Index"
+                                       asp-route-courseId="@enrollment.CourseId"
+                                       class="btn @(enrollment.Progress == 0 ? "btn-primary" : "btn-outline-primary") btn-sm">
+                                    <i class="bi bi-@(enrollment.Progress == 0 ? "play-circle" : "arrow-repeat") me-1"></i>
+                                    @(enrollment.Progress == 0 ? "Start Course" :
+                                      enrollment.Status == "Completed" ? "Review Course" : "Continue Learning")
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

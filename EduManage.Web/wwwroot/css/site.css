@@ -1,31 +1,141 @@
-html {
-  font-size: 14px;
+/* EduManage Custom Styles */
+
+.hover-shadow {
+    transition: box-shadow .2s ease, transform .2s ease;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    .hover-shadow:hover {
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        transform: translateY(-2px);
+    }
+
+.navbar {
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.card {
+    border-radius: 12px !important;
+    overflow: hidden;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.btn {
+    border-radius: 8px;
 }
 
-body {
-  margin-bottom: 60px;
+.badge {
+    font-weight: 500;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Video Player */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    .video-container iframe,
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+/* Progress Bar */
+.progress {
+    border-radius: 10px;
 }
+
+.progress-bar {
+    border-radius: 10px;
+}
+
+/* Sidebar sticky */
+@media (min-width: 992px) {
+    .sticky-top {
+        top: 80px !important;
+    }
+}
+
+.hover-icon {
+    transition: color 0.2s ease-in-out;
+}
+
+    .hover-icon:hover {
+        color: #0d6efd !important;
+    }
+
+.hover-primary:hover {
+    color: #0d6efd !important;
+}
+
+.navbar-nav .nav-link {
+    transition: color 0.2s ease-in-out;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #0d6efd !important;
+    }
+
+.hide-arrow::after {
+    display: none !important;
+}
+
+.notification-dropdown {
+    width: 380px;
+    border-radius: 12px;
+}
+
+    .notification-dropdown .text-wrap {
+        white-space: normal !important;
+    }
+
+.notification-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.notification-item.unread {
+    background-color: #f8fbff;
+}
+
+.notification-list {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #4285f4;
+    border-radius: 10px;
+}
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: #2b6cb0;
+    }

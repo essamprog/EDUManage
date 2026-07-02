@@ -82,7 +82,7 @@ public class WalletService : IWalletService
         await _uow.SaveChangesAsync();
     }
 
-    public async Task<bool> RequestWithdrawalAsync(int instructorId, WithdrawalRequestDto dto)
+    public async Task<bool> RequestWithdrawalAsync(int instructorId, WithdrawalDto dto)
     {
         var wallets = await _uow.Wallets
             .FindAsync(w => w.InstructorId == instructorId);
