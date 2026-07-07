@@ -75,7 +75,12 @@ namespace EduManage.Web
                 cfg.AddProfile<EduManage.Application.Mappings.FinancialMappingProfile>();
             });
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<EduManage.Web.Filters.NotificationActionFilter>();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.AddService<EduManage.Web.Filters.NotificationActionFilter>();
+            });
+
 
             var app = builder.Build();
 

@@ -60,8 +60,8 @@
             <div class="instructors-grid">
                 @foreach (var instructor in list)
                 {
-                    var name = instructor.User?.FullName ?? "Instructor";
-                    var initials = string.Join("", name.Split(' ').Take(2).Select(w => w[0]));
+                    var name = string.IsNullOrWhiteSpace(instructor.User?.FullName) ? "Instructor" : instructor.User.FullName;
+                    var initials = string.Join("", name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(w => w[0]));
                     var courseCount = instructor.Courses?.Count ?? 0;
 
                     <div class="instructor-card">

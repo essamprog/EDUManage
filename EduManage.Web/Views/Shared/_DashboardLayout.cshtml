@@ -294,12 +294,26 @@
             <a class="ds-link" asp-controller="Instructors" asp-action="Index">
                 <i class="bi bi-person-badge"></i> Instructors
             </a>
+            <a class="ds-link @(currentPath.StartsWith("/Profile") ? "active" : "")" asp-controller="Profile" asp-action="Index">
+                <i class="bi bi-person-circle"></i> My Profile
+            </a>
 
         </nav>
 
         <!-- User box -->
         <div class="ds-user-box">
-            <div class="ds-user-avatar">@initials</div>
+            @{
+                var sidebarAvatarUrl = ViewData["SidebarAvatarUrl"] as string;
+            }
+            @if (!string.IsNullOrEmpty(sidebarAvatarUrl))
+            {
+                <img src="@sidebarAvatarUrl" alt="@firstName"
+                     style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            }
+            else
+            {
+                <div class="ds-user-avatar">@initials</div>
+            }
             <div>
                 <div class="ds-user-name">@firstName</div>
                 <div class="ds-user-role">

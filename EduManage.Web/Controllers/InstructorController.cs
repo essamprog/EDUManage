@@ -1,3 +1,4 @@
+using EduManage.Application.Common;
 using EduManage.Application.DTOs.Courses;
 using EduManage.Application.DTOs.Financial;
 using EduManage.Application.Interfaces;
@@ -108,7 +109,7 @@ public class InstructorController : Controller
         var course = await _courseService.GetByIdAsync(section.CourseId);
         if (course == null || course.InstructorId != UserId) return Unauthorized();
 
-        string folderPath = $"{UserId}/Courses/{course.Id}";
+        string folderPath = StoragePaths.CourseVideos(UserId, course.Id);
         var uploadResult = await _photoService.AddVideoAsync(videoFile, folderPath);
 
         var lessonDto = new CreateLessonDto
@@ -144,7 +145,7 @@ public class InstructorController : Controller
 
         if (imageFile != null && imageFile.Length > 0)
         {
-            string folderPath = $"{UserId}/Courses/{course.Id}";
+            string folderPath = StoragePaths.CourseImages(UserId, course.Id);
             var uploadResult = await _photoService.AddImageAsync(imageFile, folderPath);
             await _courseService.UpdateMediaAsync(courseId, uploadResult.Url, uploadResult.PublicId, null, null);
         }

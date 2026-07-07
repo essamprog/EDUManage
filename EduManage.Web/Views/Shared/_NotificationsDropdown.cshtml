@@ -1,0 +1,108 @@
+@using EduManage.Application.DTOs.System
+@model IEnumerable<NotificationDto>
+
+@{
+    var notifList = Model?.ToList() ?? new List<NotificationDto>();
+    var unreadCount = notifList.Count(n => !n.IsRead);
+}
+
+<li class="nav-item dropdown">
+    <a class="nav-link text-secondary position-relative hover-icon dropdown-toggle hide-arrow"
+       href="#" id="notificationsDropdown" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+        <i class="bi bi-bell fs-5"></i>
+        @if (unreadCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm"
+                  style="font-size: 0.65rem; margin-top: 5px;">
+                @(unreadCount > 9 ? "9+" : unreadCount.ToString())
+            </span>
+        }
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-end shadow border-0 notification-dropdown p-0 mt-3"
+         aria-labelledby="notificationsDropdown">
+
+        @* Header *@
+        <div class="d-flex justify-content-between align-items-center px-3 py-3 border-bottom bg-light"
+             style="border-radius: 12px 12px 0 0;">
+            <h6 class="mb-0 fw-bold text-dark">
+                Notifications
+                @if (unreadCount > 0)
+                {
+                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill ms-1 fw-normal"
+                          style="font-size: 0.7rem;">@unreadCount new</span>
+                }
+            </h6>
+            @if (unreadCount > 0)
+            {
+                <form asp-controller="Notifications" asp-action="MarkAllRead" method="post" class="m-0">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-link text-primary text-decoration-none p-0"
+                            style="font-size: 0.85rem;">
+                        <i class="bi bi-check2"></i> Mark all read
+                    </button>
+                </form>
+            }
+        </div>
+
+        @* List *@
+        <div class="notification-list custom-scrollbar">
+            @if (!notifList.Any())
+            {
+                <div class="text-center py-5 px-3">
+                    <i class="bi bi-bell-slash fs-2 text-muted"></i>
+                    <p class="text-muted mt-2 mb-0" style="font-size:0.88rem;">No notifications yet</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var n in notifList.Take(5))
+                {
+                    var dotColor = n.Type switch
+                    {
+                        "Course"        => "bg-primary",
+                        "Certificate"   => "bg-warning",
+                        "Promo"         => "bg-success",
+                        "CoursePending" => "bg-info",
+                        _               => "bg-secondary"
+                    };
+
+                    <a href="@(n.Link ?? "#")"
+                       class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item @(n.IsRead ? "" : "unread")">
+                        <div class="d-flex align-items-start">
+                            <span class="notification-dot @dotColor mt-2 me-2 @(n.IsRead ? "opacity-50" : "")"></span>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 fw-bold text-dark fs-6">@n.Title</p>
+                                <p class="mb-1 text-muted notification-text">@n.Message</p>
+                                <small class="text-muted" style="font-size: 0.75rem;">
+                                    @GetTimeAgo(n.CreatedAt)
+                                </small>
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+
+        @* Footer *@
+        <div class="text-center p-3 bg-white" style="border-radius: 0 0 12px 12px;">
+            <a asp-controller="Notifications" asp-action="Index"
+               class="text-primary text-decoration-none fw-medium" style="font-size: 0.9rem;">
+                View all notifications <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</li>
+
+@functions {
+    static string GetTimeAgo(DateTime dt)
+    {
+        var diff = DateTime.UtcNow - dt;
+        if (diff.TotalMinutes < 1)  return "Just now";
+        if (diff.TotalMinutes < 60) return $"{(int)diff.TotalMinutes}m ago";
+        if (diff.TotalHours < 24)   return $"{(int)diff.TotalHours}h ago";
+        if (diff.TotalDays < 7)     return $"{(int)diff.TotalDays}d ago";
+        return dt.ToString("MMM dd");
+    }
+}

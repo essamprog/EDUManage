@@ -42,91 +42,28 @@
                         </a>
                     </li>
 
-                    <li class="nav-item dropdown">
-    <a class="nav-link text-secondary position-relative hover-icon dropdown-toggle hide-arrow" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-        <i class="bi bi-bell fs-5"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm" style="font-size: 0.65rem; margin-top: 5px;">
-            1
-        </span>
-    </a>
-
-    <div class="dropdown-menu dropdown-menu-end shadow border-0 notification-dropdown p-0 mt-3" aria-labelledby="notificationsDropdown">
-        
-        <div class="d-flex justify-content-between align-items-center px-3 py-3 border-bottom bg-light" style="border-radius: 12px 12px 0 0;">
-            <h6 class="mb-0 fw-bold text-dark">
-                Notifications 
-                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill ms-1 fw-normal" style="font-size: 0.7rem;">1 new</span>
-            </h6>
-            <a href="#" class="text-primary text-decoration-none" style="font-size: 0.85rem;">
-                <i class="bi bi-check2"></i> Mark all read
-            </a>
-        </div>
-
-        <div class="notification-list custom-scrollbar">
-            
-            <a href="#" class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item unread">
-                <div class="d-flex align-items-start">
-                    <span class="notification-dot bg-secondary mt-2 me-2"></span>
-                    <div class="flex-grow-1">
-                        <p class="mb-1 fw-bold text-dark fs-6 d-flex justify-content-between">
-                            Instructor Application Update ❌
-                        </p>
-                        <p class="mb-1 text-muted notification-text">
-                            Your application to become an instructor was reviewed but not approved at this time. Pleas...
-                        </p>
-                        <small class="text-muted" style="font-size: 0.75rem;">3 hours ago</small>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item">
-                <div class="d-flex align-items-start">
-                    <span class="notification-dot bg-warning mt-2 me-2" style="opacity: 0.5;"></span>
-                    <div class="flex-grow-1">
-                        <p class="mb-1 fw-bold text-dark fs-6">
-                            Course Completed! 🎓
-                        </p>
-                        <p class="mb-1 text-muted notification-text">
-                            Congratulations! You have completed "Course Java". Your certificate is now ready.
-                        </p>
-                        <small class="text-muted" style="font-size: 0.75rem;">6 days ago</small>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="dropdown-item py-3 px-3 border-bottom text-wrap notification-item">
-                <div class="d-flex align-items-start">
-                    <span class="notification-dot bg-primary mt-2 me-2" style="opacity: 0.5;"></span>
-                    <div class="flex-grow-1">
-                        <p class="mb-1 fw-bold text-dark fs-6">
-                            Purchase Successful ✅
-                        </p>
-                        <p class="mb-1 text-muted notification-text">
-                            You have successfully purchased "Database Management Fundamentals: From Basics to...
-                        </p>
-                        <small class="text-muted" style="font-size: 0.75rem;">6 days ago</small>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-
-        <div class="text-center p-3 bg-white" style="border-radius: 0 0 12px 12px;">
-            <a asp-controller="Notifications" asp-action="Index" class="text-primary text-decoration-none fw-medium" style="font-size: 0.9rem;">
-                View all notifications <i class="bi bi-arrow-right"></i>
-            </a>
-        </div>
-    </div>
-</li>
+                    @await Html.PartialAsync("_NotificationsDropdown", ViewData["Notifications"] as IEnumerable<EduManage.Application.DTOs.System.NotificationDto> ?? Enumerable.Empty<EduManage.Application.DTOs.System.NotificationDto>())
 
                     <li class="nav-item dropdown ms-2">
                         <a class="nav-link p-0 d-flex align-items-center text-dark dropdown-toggle hide-arrow" href="#" data-bs-toggle="dropdown">
                             @{
                                 var userName = User.Identity?.Name ?? "User";
                                 var firstName = userName.Split('@')[0];
+                                var navbarAvatar = ViewData["NavbarAvatarUrl"] as string;
                             }
-                            <img src="https://ui-avatars.com/api/?name=@firstName&background=0D8ABC&color=fff&rounded=true" 
-                                 alt="Profile" width="40" height="40" class="rounded-circle shadow-sm" style="object-fit: cover;">
+                            @if (!string.IsNullOrEmpty(navbarAvatar))
+                            {
+                                <img src="@navbarAvatar"
+                                     alt="Profile" width="40" height="40"
+                                     class="rounded-circle shadow-sm" style="object-fit: cover;">
+                            }
+                            else
+                            {
+                                <img src="https://ui-avatars.com/api/?name=@firstName&background=0D8ABC&color=fff&rounded=true"
+                                     alt="Profile" width="40" height="40"
+                                     class="rounded-circle shadow-sm" style="object-fit: cover;">
+                            }
+
                             <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
                         </a>
                         

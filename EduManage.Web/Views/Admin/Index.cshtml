@@ -15,7 +15,7 @@
             <i class="bi bi-exclamation-triangle-fill"></i>
             <span>
                 <strong>@ViewData["PendingCourses"]</strong> course(s) pending review.
-                <a asp-area="Admin" asp-controller="Courses" asp-action="Pending"
+                <a asp-controller="Admin" asp-action="Pending"
                    class="alert-link ms-1">Review now</a>
             </span>
         </div>
@@ -27,7 +27,7 @@
             <i class="bi bi-cash-coin"></i>
             <span>
                 <strong>@ViewData["PendingWithdrawals"]</strong> withdrawal request(s) pending.
-                <a asp-area="Admin" asp-controller="Finance" asp-action="Index"
+                <a asp-controller="Admin" asp-action="Finance"
                    class="alert-link ms-1">Review now</a>
             </span>
         </div>
@@ -66,7 +66,7 @@
     <!-- Quick Links -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+            <a asp-controller="Admin" asp-action="Users"
                    class="card border-0 shadow-sm p-3 text-decoration-none text-dark d-flex flex-row align-items-center gap-3">
                 <div class="bg-primary bg-opacity-10 rounded p-2">
                     <i class="bi bi-people fs-4 text-primary"></i>
@@ -79,7 +79,7 @@
             </a>
         </div>
         <div class="col-md-4">
-            <a asp-area="Admin" asp-controller="Courses" asp-action="Pending"
+            <a asp-controller="Admin" asp-action="Pending"
                    class="card border-0 shadow-sm p-3 text-decoration-none text-dark d-flex flex-row align-items-center gap-3">
                 <div class="bg-warning bg-opacity-10 rounded p-2">
                     <i class="bi bi-hourglass-split fs-4 text-warning"></i>
@@ -92,7 +92,7 @@
             </a>
         </div>
         <div class="col-md-4">
-            <a asp-area="Admin" asp-controller="Finance" asp-action="Index"
+            <a asp-controller="Admin" asp-action="Finance"
                    class="card border-0 shadow-sm p-3 text-decoration-none text-dark d-flex flex-row align-items-center gap-3">
                 <div class="bg-success bg-opacity-10 rounded p-2">
                     <i class="bi bi-wallet2 fs-4 text-success"></i>

@@ -1,0 +1,356 @@
+@using EduManage.Application.DTOs.Auth
+@model ProfileDto
+
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "_DashboardLayout";
+
+    var picture     = ViewData["ProfilePicture"] as string;
+    var memberSince = ViewData["MemberSince"];
+    var role        = ViewData["Role"] as string ?? "User";
+    var activeTab   = TempData["ActiveTab"] as string ?? "info";
+
+    var fullName = Model?.FullName ?? User.Identity?.Name ?? "User";
+    var initials = string.Join("", fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                           .Take(2).Select(w => w[0]));
+}
+
+@* ── Avatar upload: auto-submit on file pick ── *@
+<form id="avatarForm" asp-action="UploadAvatar" method="post" enctype="multipart/form-data" style="display:none;">
+    @Html.AntiForgeryToken()
+    <input type="file" id="avatarFile" name="avatarFile"
+           accept="image/jpeg,image/png,image/webp,image/gif"
+           onchange="document.getElementById('avatarForm').submit()" />
+</form>
+
+@* ── Profile Header Card ──────────────────────────────── *@
+<div class="profile-header-card mb-4">
+    <div class="avatar-section">
+        <div class="avatar-wrap" onclick="document.getElementById('avatarFile').click()" title="Click to change avatar">
+            @if (!string.IsNullOrEmpty(picture))
+            {
+                <img src="@picture" alt="@fullName" class="avatar-img" />
+            }
+            else
+            {
+                <div class="avatar-initials">@initials</div>
+            }
+            <div class="avatar-overlay">
+                <i class="bi bi-camera-fill"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-meta">
+        <h2 class="profile-name">@fullName</h2>
+        <p class="profile-email text-muted mb-2">@(Model?.Email ?? "")</p>
+        <div class="profile-badges">
+            <span class="role-badge"><i class="bi bi-person-fill me-1"></i>@role</span>
+            <span class="member-badge"><i class="bi bi-calendar3 me-1"></i>Member since @memberSince</span>
+        </div>
+    </div>
+</div>
+
+@* ── Tabs ─────────────────────────────────────────────── *@
+<div class="profile-card">
+    <ul class="profile-tabs" id="profileTabs">
+        <li>
+            <a href="#" class="tab-link @(activeTab == "info" ? "active" : "")"
+               data-tab="tab-info">
+                <i class="bi bi-person me-1"></i> Profile Info
+            </a>
+        </li>
+        <li>
+            <a href="#" class="tab-link @(activeTab == "password" ? "active" : "")"
+               data-tab="tab-password">
+                <i class="bi bi-lock me-1"></i> Password
+            </a>
+        </li>
+        <li>
+            <a href="#" class="tab-link @(activeTab == "social" ? "active" : "")"
+               data-tab="tab-social">
+                <i class="bi bi-share me-1"></i> Social Links
+            </a>
+        </li>
+    </ul>
+
+    <hr class="tab-divider" />
+
+    @* ── Tab: Profile Info ────────────────────────── *@
+    <div id="tab-info" class="tab-content @(activeTab == "info" ? "active" : "")">
+        <form asp-action="UpdateInfo" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                    <div class="input-wrap">
+                        <i class="bi bi-person input-icon"></i>
+                        <input asp-for="FullName" class="form-control ps-ic" placeholder="Your full name" />
+                    </div>
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                    <div class="input-wrap">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <input asp-for="Email" type="email" class="form-control ps-ic" placeholder="your@email.com" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="form-label">Bio</label>
+                <textarea asp-for="Bio" class="form-control" rows="4"
+                          placeholder="Tell us a little about yourself…"></textarea>
+                <span asp-validation-for="Bio" class="text-danger small"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn-save">
+                    <i class="bi bi-floppy me-1"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @* ── Tab: Password ────────────────────────────── *@
+    <div id="tab-password" class="tab-content @(activeTab == "password" ? "active" : "")">
+        <form asp-action="ChangePassword" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <div class="input-wrap">
+                    <i class="bi bi-lock input-icon"></i>
+                    <input name="CurrentPassword" type="password" class="form-control ps-ic"
+                           placeholder="Enter current password" autocomplete="current-password" />
+                </div>
+            </div>
+
+            <div class="form-grid-2 mt-3">
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <div class="input-wrap">
+                        <i class="bi bi-key input-icon"></i>
+                        <input name="NewPassword" type="password" class="form-control ps-ic"
+                               placeholder="Min 8 characters" autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <div class="input-wrap">
+                        <i class="bi bi-key input-icon"></i>
+                        <input name="ConfirmPassword" type="password" class="form-control ps-ic"
+                               placeholder="Repeat new password" autocomplete="new-password" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn-save">
+                    <i class="bi bi-shield-lock me-1"></i> Change Password
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @* ── Tab: Social Links ────────────────────────── *@
+    <div id="tab-social" class="tab-content @(activeTab == "social" ? "active" : "")">
+        <form asp-action="UpdateInfo" method="post">
+            @Html.AntiForgeryToken()
+            @* hidden fields to keep name/email valid *@
+            <input type="hidden" asp-for="FullName" />
+            <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="Bio" />
+
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label class="form-label"><i class="bi bi-globe2 me-1 text-primary"></i> Website</label>
+                    <div class="input-wrap">
+                        <i class="bi bi-globe2 input-icon"></i>
+                        <input asp-for="Website" class="form-control ps-ic" placeholder="https://yoursite.com" />
+                    </div>
+                    <span asp-validation-for="Website" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="bi bi-linkedin me-1 text-primary"></i> LinkedIn</label>
+                    <div class="input-wrap">
+                        <i class="bi bi-linkedin input-icon"></i>
+                        <input asp-for="Linkedin" class="form-control ps-ic" placeholder="linkedin.com/in/you" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="bi bi-github me-1 text-dark"></i> GitHub</label>
+                    <div class="input-wrap">
+                        <i class="bi bi-github input-icon"></i>
+                        <input asp-for="Github" class="form-control ps-ic" placeholder="github.com/you" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn-save">
+                    <i class="bi bi-floppy me-1"></i> Save Links
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* ── Styles ────────────────────────────────────────────── *@
+<style>
+    /* ── Header card ───────────────────────────────── */
+    .profile-header-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        box-shadow: 0 2px 14px rgba(0,0,0,.06);
+    }
+
+    /* ── Avatar ──────────────────────────────────── */
+    .avatar-wrap {
+        position: relative;
+        width: 96px; height: 96px;
+        border-radius: 50%;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: 3px solid #e8edf2;
+        box-shadow: 0 4px 16px rgba(66,153,225,.25);
+        overflow: hidden;
+        transition: box-shadow .25s;
+    }
+    .avatar-wrap:hover { box-shadow: 0 6px 22px rgba(66,153,225,.4); }
+    .avatar-img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .avatar-initials {
+        width: 100%; height: 100%;
+        background: linear-gradient(135deg, #4299e1, #7c3aed);
+        color: #fff;
+        font-size: 2rem; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+        user-select: none;
+    }
+    .avatar-overlay {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,.42);
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity .22s;
+        color: #fff; font-size: 1.4rem;
+    }
+    .avatar-wrap:hover .avatar-overlay { opacity: 1; }
+
+    /* ── Meta ───────────────────────────────────── */
+    .profile-name { font-size: 1.5rem; font-weight: 800; color: #1a202c; margin: 0 0 2px; }
+    .profile-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+    .role-badge, .member-badge {
+        font-size: .78rem; font-weight: 600;
+        padding: 4px 12px; border-radius: 50px;
+    }
+    .role-badge    { background: #ebf4ff; color: #2b6cb0; }
+    .member-badge  { background: #f0fff4; color: #276749; }
+
+    /* ── Main card ──────────────────────────────── */
+    .profile-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 28px 32px;
+        box-shadow: 0 2px 14px rgba(0,0,0,.06);
+    }
+
+    /* ── Tabs ──────────────────────────────────── */
+    .profile-tabs {
+        list-style: none;
+        margin: 0; padding: 0;
+        display: flex; gap: 4px;
+    }
+    .tab-link {
+        display: inline-block;
+        padding: 8px 18px;
+        font-size: .88rem; font-weight: 600;
+        color: #718096;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        transition: color .18s, border-color .18s;
+    }
+    .tab-link:hover  { color: #4299e1; }
+    .tab-link.active { color: #4299e1; border-bottom-color: #4299e1; }
+
+    .tab-divider { margin: 0 0 24px; border-color: #e8edf2; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Form grid ─────────────────────────────── */
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+    @@media (max-width: 700px) {
+        .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+        .profile-header-card { flex-direction: column; align-items: flex-start; }
+    }
+
+    .form-label { font-weight: 600; font-size: .85rem; color: #374151; margin-bottom: 6px; }
+
+    /* ── Input with icon ──────────────────────── */
+    .input-wrap { position: relative; }
+    .input-icon {
+        position: absolute; left: 12px; top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0; font-size: .95rem; pointer-events: none;
+    }
+    .ps-ic { padding-left: 36px !important; }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1.5px solid #e2e8f0;
+        font-size: .9rem;
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .form-control:focus {
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66,153,225,.15);
+        outline: none;
+    }
+
+    /* ── Save button ───────────────────────────── */
+    .btn-save {
+        background: linear-gradient(135deg, #4299e1, #2b6cb0);
+        color: #fff; border: none;
+        border-radius: 10px;
+        padding: 10px 26px;
+        font-weight: 600; font-size: .92rem;
+        cursor: pointer;
+        transition: opacity .2s, transform .15s;
+        box-shadow: 0 4px 14px rgba(66,153,225,.35);
+    }
+    .btn-save:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-save:active { transform: translateY(0); }
+</style>
+
+@section Scripts {
+<script>
+    // Tab switching
+    document.querySelectorAll('.tab-link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            link.classList.add('active');
+            document.getElementById(link.dataset.tab).classList.add('active');
+        });
+    });
+</script>
+}
