@@ -16,6 +16,10 @@
 
                 <form asp-action="Index" method="get" id="filterForm">
                     <input type="hidden" name="search" value="@ViewData["Search"]" />
+                    @if (ViewData["InstructorId"] != null)
+                    {
+                        <input type="hidden" name="instructorId" value="@ViewData["InstructorId"]" />
+                    }
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Category</label>
@@ -70,6 +74,15 @@
 
         @* Results *@
         <div class="col-lg-9">
+            @if (ViewData["InstructorId"] != null)
+            {
+                <div class="alert alert-info d-flex align-items-center justify-content-between mb-3 py-2">
+                    <span><i class="bi bi-person-circle me-2"></i>Showing courses for a specific instructor</span>
+                    <a href="@Url.Action("Index", new { search = ViewData["Search"] })" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-x me-1"></i>Show All
+                    </a>
+                </div>
+            }
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0 fw-bold">
                     @Model.Total Courses
@@ -110,7 +123,8 @@
                                 <a class="page-link"
                                        asp-action="Index"
                                        asp-route-page="@(Model.Page - 1)"
-                                       asp-route-search="@ViewData["Search"]">
+                                       asp-route-search="@ViewData["Search"]"
+                                       asp-route-instructorId="@ViewData["InstructorId"]">
                                     <i class="bi bi-chevron-left"></i>
                                 </a>
                             </li>
@@ -120,14 +134,16 @@
                                     <a class="page-link"
                                        asp-action="Index"
                                        asp-route-page="@i"
-                                       asp-route-search="@ViewData["Search"]">@i</a>
+                                       asp-route-search="@ViewData["Search"]"
+                                       asp-route-instructorId="@ViewData["InstructorId"]">@i</a>
                                 </li>
                             }
                             <li class="page-item @(!Model.HasNext ? "disabled" : "")">
                                 <a class="page-link"
                                        asp-action="Index"
                                        asp-route-page="@(Model.Page + 1)"
-                                       asp-route-search="@ViewData["Search"]">
+                                       asp-route-search="@ViewData["Search"]"
+                                       asp-route-instructorId="@ViewData["InstructorId"]">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>
                             </li>

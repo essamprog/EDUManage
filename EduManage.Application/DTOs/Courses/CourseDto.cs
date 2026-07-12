@@ -20,6 +20,7 @@ public class CourseDto
     public string Status { get; set; } = string.Empty;
     public string Language { get; set; } = string.Empty;   // ← مضاف
     public string InstructorName { get; set; } = string.Empty;
+    public string? InstructorPicture { get; set; }
     public string? CategoryName { get; set; }
     public bool IsBestseller { get; set; }
     public DateTime? PublishedAt { get; set; }      // ← مضاف

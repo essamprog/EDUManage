@@ -6,7 +6,7 @@ using EduManage.Application.Interfaces;
 using EduManage.Core.Entities;
 using EduManage.Core.Enums;
 using EduManage.Core.Interfaces;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduManage.Application.Services.Courses;
 
@@ -23,27 +23,30 @@ public class CourseService : ICourseService
 
     public async Task<PagedResult<CourseDto>> GetAllAsync(CourseFilterDto filter)
     {
-        var all = await _uow.Courses.FindAsync(c =>
-            c.Status == CourseStatus.Published &&
-            (filter.Search == null || c.Title.Contains(filter.Search)) &&
-            (filter.CategoryId == null || c.CategoryId == filter.CategoryId) &&
-            (filter.Level == null || c.Level == filter.Level) &&
-            (filter.MinPrice == null || c.Price >= filter.MinPrice) &&
-            (filter.MaxPrice == null || c.Price <= filter.MaxPrice));
+        var query = _uow.Courses.Query()
+            .Include(c => c.Instructor).ThenInclude(i => i.User)
+            .Where(c =>
+                c.Status == CourseStatus.Published &&
+                (filter.InstructorId == null || c.InstructorId == filter.InstructorId) &&
+                (filter.Search == null || c.Title.Contains(filter.Search)) &&
+                (filter.CategoryId == null || c.CategoryId == filter.CategoryId) &&
+                (filter.Level == null || c.Level == filter.Level) &&
+                (filter.MinPrice == null || c.Price >= filter.MinPrice) &&
+                (filter.MaxPrice == null || c.Price <= filter.MaxPrice));
 
-        var sorted = filter.SortBy switch
+        query = filter.SortBy switch
         {
-            "popular" => all.OrderByDescending(c => c.TotalStudents),
-            "rating" => all.OrderByDescending(c => c.AverageRating),
-            "price" => all.OrderBy(c => c.Price),
-            _ => all.OrderByDescending(c => c.CreatedAt),
+            "popular" => query.OrderByDescending(c => c.TotalStudents),
+            "rating"  => query.OrderByDescending(c => c.AverageRating),
+            "price"   => query.OrderBy(c => c.Price),
+            _         => query.OrderByDescending(c => c.CreatedAt),
         };
 
-        var total = sorted.Count();
-        var items = sorted
+        var total = await query.CountAsync();
+        var items = await query
             .Skip((filter.Page - 1) * filter.PageSize)
             .Take(filter.PageSize)
-            .ToList();
+            .ToListAsync();
 
         return new PagedResult<CourseDto>
         {
@@ -127,9 +130,13 @@ public class CourseService : ICourseService
 
     public async Task<IEnumerable<CourseDto>> GetByInstructorAsync(int instructorId)
     {
-        var courses = await _uow.Courses.FindAsync(c => c.InstructorId == instructorId);
-        var ordered = courses.OrderByDescending(c => c.CreatedAt);
-        return _mapper.Map<IEnumerable<CourseDto>>(ordered);
+        var courses = await _uow.Courses.Query()
+            .Include(c => c.Instructor).ThenInclude(i => i.User)
+            .Where(c => c.InstructorId == instructorId)
+            .OrderByDescending(c => c.CreatedAt)
+            .ToListAsync();
+
+        return _mapper.Map<IEnumerable<CourseDto>>(courses);
     }
 
     // --- CURRICULUM & MEDIA --- //

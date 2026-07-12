@@ -21,6 +21,10 @@ public class CourseMappingProfile : Profile
                        o => o.MapFrom(s => s.Instructor != null
                            ? s.Instructor.User.FullName
                            : string.Empty))
+            .ForMember(d => d.InstructorPicture,
+                       o => o.MapFrom(s => s.Instructor != null
+                           ? s.Instructor.User.ProfilePicture
+                           : null))
             .ForMember(d => d.CategoryName,
                        o => o.MapFrom(s => s.Category != null
                            ? s.Category.Name

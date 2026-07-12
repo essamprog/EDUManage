@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,7 +10,9 @@ namespace EduManage.Core.Enums
         Certificate = 2,
         Promo = 3,
         System = 4,
-        CoursePending = 5
+        CoursePending = 5,
+        WithdrawalRequest = 6,
+        Payment = 7
     }
 
 }

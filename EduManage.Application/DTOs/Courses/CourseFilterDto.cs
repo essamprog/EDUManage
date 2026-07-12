@@ -1,4 +1,4 @@
-﻿using EduManage.Core.Enums;
+using EduManage.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +10,7 @@ public class CourseFilterDto
 {
     public string? Search { get; set; }
     public int? CategoryId { get; set; }
+    public int? InstructorId { get; set; }
     public CourseLevel? Level { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }

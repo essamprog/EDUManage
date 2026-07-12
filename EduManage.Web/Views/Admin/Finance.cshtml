@@ -26,28 +26,36 @@
 
     <!-- Stats -->
     <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="fs-3 fw-bold text-success mb-1">
-                    @((ViewData["TotalRevenue"] as decimal?)?.ToString("N0")) EGP
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fs-4 fw-bold text-success mb-1">
+                    @((ViewData["TotalRevenue"] as decimal?)?.ToString("N0") ?? "0") EGP
                 </div>
-                <div class="text-muted small">Total Revenue</div>
+                <div class="text-muted small">Total Platform Revenue</div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="fs-3 fw-bold text-primary mb-1">
-                    @((ViewData["PlatformEarnings"] as decimal?)?.ToString("N0")) EGP
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fs-4 fw-bold text-primary mb-1">
+                    @((ViewData["PlatformEarnings"] as decimal?)?.ToString("N0") ?? "0") EGP
                 </div>
                 <div class="text-muted small">Platform Earnings (20%)</div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="fs-3 fw-bold text-warning mb-1">
-                    @((ViewData["PendingWithdrawals"] as decimal?)?.ToString("N0")) EGP
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fs-4 fw-bold text-warning mb-1">
+                    @((ViewData["InstructorsAvailableBalance"] as decimal?)?.ToString("N0") ?? "0") EGP
                 </div>
-                <div class="text-muted small">Pending Withdrawals</div>
+                <div class="text-muted small">Instructors Available Balance</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fs-4 fw-bold text-info mb-1">
+                    @((ViewData["InstructorsTotalWithdrawn"] as decimal?)?.ToString("N0") ?? "0") EGP
+                </div>
+                <div class="text-muted small">Paid to Instructors</div>
             </div>
         </div>
     </div>
@@ -63,7 +71,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
-                            <th>Instructor ID</th>
+                            <th>Instructor</th>
                             <th>Amount</th>
                             <th>Method</th>
                             <th>Account</th>
@@ -77,7 +85,18 @@
                         {
                             <tr>
                                 <td class="small text-muted">#@w.Id</td>
-                                <td class="small">@w.InstructorId</td>
+                                <td class="small">
+                                    @if (w.Instructor?.User != null)
+                                    {
+                                        <span class="fw-medium">@w.Instructor.User.FullName</span>
+                                        <br />
+                                        <small class="text-success fw-bold">Available: @(w.Instructor.Wallet?.AvailableBalance.ToString("N0") ?? "0") EGP</small>
+                                    }
+                                    else
+                                    {
+                                        <span>Instructor #@w.InstructorId</span>
+                                    }
+                                </td>
                                 <td class="fw-bold small">@w.Amount.ToString("N0") EGP</td>
                                 <td class="small">@w.Method</td>
                                 <td class="small text-muted">@w.AccountDetail</td>

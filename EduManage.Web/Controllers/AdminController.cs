@@ -5,6 +5,7 @@ using EduManage.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller
@@ -12,15 +13,18 @@ public class AdminController : Controller
     private readonly IUnitOfWork _uow;
     private readonly ICourseService _courseService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IWalletService _walletService;
 
     public AdminController(
         IUnitOfWork uow,
         ICourseService courseService,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IWalletService walletService)
     {
         _uow = uow;
         _courseService = courseService;
         _userManager = userManager;
+        _walletService = walletService;
     }
 
     // GET /admin
@@ -188,16 +192,25 @@ public class AdminController : Controller
     // GET /admin/finance
     public async Task<IActionResult> Finance()
     {
-        var withdrawals = (await _uow.Withdrawals.GetAllAsync())
-                               .OrderByDescending(w => w.RequestedAt).Take(20);
+        var withdrawals = await _uow.Withdrawals.Query()
+            .Include(w => w.Instructor).ThenInclude(i => i.User)
+            .Include(w => w.Instructor).ThenInclude(i => i.Wallet)
+            .OrderByDescending(w => w.RequestedAt)
+            .Take(20)
+            .ToListAsync();
+
         var transactions = (await _uow.Transactions.GetAllAsync())
                                .OrderByDescending(t => t.CreatedAt).Take(10);
+
+        var wallets = await _uow.Wallets.GetAllAsync();
 
         ViewData["TotalRevenue"] = (await _uow.Orders.FindAsync(
                                              o => o.Status == OrderStatus.Completed))
                                              .Sum(o => o.TotalAmount);
         ViewData["PlatformEarnings"] = (await _uow.Transactions.GetAllAsync())
                                              .Sum(t => t.GrossAmount - t.NetAmount);
+        ViewData["InstructorsAvailableBalance"] = wallets.Sum(w => w.AvailableBalance);
+        ViewData["InstructorsTotalWithdrawn"] = wallets.Sum(w => w.TotalWithdrawn);
         ViewData["Withdrawals"] = withdrawals;
         ViewData["RecentTransactions"] = transactions;
 
@@ -208,24 +221,8 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> ApproveWithdrawal(int id)
     {
-        var withdrawal = await _uow.Withdrawals.GetByIdAsync(id);
-        if (withdrawal is null) return NotFound();
-
-        withdrawal.Status = WithdrawalStatus.Paid;
-        withdrawal.UpdatedAt = DateTime.UtcNow;
-        _uow.Withdrawals.Update(withdrawal);
-
-        var wallets = await _uow.Wallets.FindAsync(w => w.InstructorId == withdrawal.InstructorId);
-        var wallet = wallets.FirstOrDefault();
-        if (wallet is not null)
-        {
-            wallet.TotalWithdrawn += withdrawal.Amount;
-            wallet.UpdatedAt = DateTime.UtcNow;
-            _uow.Wallets.Update(wallet);
-        }
-
-        await _uow.SaveChangesAsync();
-        TempData["Success"] = "Withdrawal approved.";
+        await _walletService.ApproveWithdrawalAsync(id);
+        TempData["Success"] = "Withdrawal approved and instructor notified.";
         return RedirectToAction("Finance");
     }
 
@@ -233,24 +230,8 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> RejectWithdrawal(int id)
     {
-        var withdrawal = await _uow.Withdrawals.GetByIdAsync(id);
-        if (withdrawal is null) return NotFound();
-
-        var wallets = await _uow.Wallets.FindAsync(w => w.InstructorId == withdrawal.InstructorId);
-        var wallet = wallets.FirstOrDefault();
-        if (wallet is not null)
-        {
-            wallet.AvailableBalance += withdrawal.Amount;
-            wallet.UpdatedAt = DateTime.UtcNow;
-            _uow.Wallets.Update(wallet);
-        }
-
-        withdrawal.Status = WithdrawalStatus.Rejected;
-        withdrawal.UpdatedAt = DateTime.UtcNow;
-        _uow.Withdrawals.Update(withdrawal);
-
-        await _uow.SaveChangesAsync();
-        TempData["Error"] = "Withdrawal rejected.";
+        await _walletService.RejectWithdrawalAsync(id);
+        TempData["Error"] = "Withdrawal rejected and instructor notified.";
         return RedirectToAction("Finance");
     }
 }

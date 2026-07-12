@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EduManage.Application.DTOs.Common;
 using EduManage.Application.DTOs.Financial;
 using EduManage.Application.Interfaces;
@@ -12,11 +12,13 @@ public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
+    private readonly IWalletService _walletService;
 
-    public OrderService(IUnitOfWork uow, IMapper mapper)
+    public OrderService(IUnitOfWork uow, IMapper mapper, IWalletService walletService)
     {
         _uow = uow;
         _mapper = mapper;
+        _walletService = walletService;
     }
 
     // ── Cart ─────────────────────────────────────────────
@@ -199,7 +201,11 @@ public class OrderService : IOrderService
             }
 
             // تحويل نسبة للـ Instructor عن طريق WalletService
-            // عضو 3 هيربطه بعد ما يخلص WalletService
+            var courseForSale = await _uow.Courses.GetByIdAsync(cartItem.CourseId);
+            if (courseForSale is not null && price > 0)
+            {
+                await _walletService.ProcessSaleAsync(courseForSale.InstructorId, orderItem.Id, price);
+            }
         }
 
         // مسح السلة بعد الـ Checkout

@@ -1,4 +1,4 @@
-﻿using EduManage.Core.Interfaces;
+using EduManage.Core.Interfaces;
 using EduManage.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,6 +36,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         => predicate == null
             ? await _dbSet.CountAsync()
             : await _dbSet.CountAsync(predicate);
+
+    public IQueryable<T> Query()
+        => _dbSet.AsQueryable();
 
     public async Task AddAsync(T entity)
         => await _dbSet.AddAsync(entity);

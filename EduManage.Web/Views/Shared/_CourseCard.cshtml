@@ -1,6 +1,7 @@
-﻿@model CourseDto
+﻿@using EduManage.Application.DTOs.Courses
+@model CourseDto
 
-<div class="card h-100 border-0 shadow-sm hover-shadow">
+<div class="card h-100 border-0 shadow-sm hover-shadow" style="transition: transform .2s, box-shadow .2s;">
     <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.Id"
            class="text-decoration-none">
         <img src="@(Model.ThumbnailUrl ?? "/images/course-default.jpg")"
@@ -22,7 +23,29 @@
                 @Model.Title
             </a>
         </h6>
-        <p class="text-muted small mb-2">@Model.InstructorName</p>
+
+        @* Instructor info *@
+        <div class="d-flex align-items-center gap-2 mb-2">
+            @if (!string.IsNullOrEmpty(Model.InstructorPicture))
+            {
+                <img src="@Model.InstructorPicture" alt="@Model.InstructorName"
+                     style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            }
+            else
+            {
+                var nameForInitials = Model.InstructorName ?? "?";
+                var initials = string.Join("", nameForInitials
+                    .Split(' ', System.StringSplitOptions.RemoveEmptyEntries)
+                    .Take(2)
+                    .Select(w => w[0]));
+                <span style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4299e1,#7c3aed);
+                             color:#fff;font-size:10px;font-weight:700;display:inline-flex;
+                             align-items:center;justify-content:center;flex-shrink:0;">
+                    @initials
+                </span>
+            }
+            <span class="text-muted small text-truncate">@Model.InstructorName</span>
+        </div>
 
         <div class="d-flex align-items-center gap-1 mb-2">
             <span class="fw-bold text-warning small">@Model.AverageRating.ToString("F1")</span>

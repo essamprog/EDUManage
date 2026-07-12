@@ -1,7 +1,9 @@
-@using EduManage.Application.DTOs.Financial
+﻿@using EduManage.Application.DTOs.Financial
 @model WalletDto
 @{
-    ViewData["Title"] = "My Earnings"; }
+    ViewData["Title"] = "My Earnings";
+    var feePercent = 20;
+}
 
 <div class="container py-4">
 
@@ -27,23 +29,25 @@
     <!-- Balance Cards -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-lg-3">
-            <div class="card border-0 shadow-sm text-center p-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
                 <div class="fs-3 fw-bold text-success mb-1">
                     @Model.AvailableBalance.ToString("N0") EGP
                 </div>
                 <div class="text-muted small">Available Balance</div>
+                <div class="text-muted" style="font-size:11px;">(after 20% platform fee)</div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="fs-3 fw-bold text-warning mb-1">
-                    @Model.PendingBalance.ToString("N0") EGP
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fs-3 fw-bold text-primary mb-1">
+                    @Model.LifetimeEarnings.ToString("N0") EGP
                 </div>
-                <div class="text-muted small">Pending (Hold)</div>
+                <div class="text-muted small">Lifetime Net Earnings</div>
+                <div class="text-muted" style="font-size:11px;">your 80% of total sales</div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
-            <div class="card border-0 shadow-sm text-center p-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
                 <div class="fs-3 fw-bold text-info mb-1">
                     @Model.TotalWithdrawn.ToString("N0") EGP
                 </div>
@@ -51,11 +55,12 @@
             </div>
         </div>
         <div class="col-6 col-lg-3">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="fs-3 fw-bold text-primary mb-1">
-                    @Model.LifetimeEarnings.ToString("N0") EGP
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fs-3 fw-bold text-danger mb-1">
+                    @((Model.Transactions.Sum(t => t.GrossAmount) - Model.Transactions.Sum(t => t.NetAmount)).ToString("N0")) EGP
                 </div>
-                <div class="text-muted small">Lifetime Earnings</div>
+                <div class="text-muted small">Platform Fee (20%)</div>
+                <div class="text-muted" style="font-size:11px;">deducted from gross sales</div>
             </div>
         </div>
     </div>
@@ -73,75 +78,174 @@
                 <div class="card-body">
                     <form asp-controller="Instructor" asp-action="Withdraw" method="post">
                         @Html.AntiForgeryToken()
-
                         <div class="mb-3">
                             <label class="form-label fw-bold">Amount (EGP)</label>
                             <input type="number" name="Amount" class="form-control"
                                    placeholder="0" min="50"
                                    max="@Model.AvailableBalance" required />
                             <div class="form-text">
-                                Min 50 EGP � Available: @Model.AvailableBalance.ToString("N0") EGP
+                                Min 50 EGP &mdash; Available: @Model.AvailableBalance.ToString("N0") EGP
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold">Method</label>
                             <select name="Method" class="form-select" required>
                                 <option value="">Select method</option>
-                                <option value="vodafone_cash">Vodafone Cash</option>
-                                <option value="bank_transfer">Bank Transfer</option>
-                                <option value="instapay">InstaPay</option>
+                                <option value="Vodafone Cash">Vodafone Cash</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="InstaPay">InstaPay</option>
                             </select>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label fw-bold">Account / Phone Number</label>
                             <input type="text" name="AccountDetail" class="form-control"
                                    placeholder="01xxxxxxxxx" required />
                         </div>
-
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success"
                                 @(Model.AvailableBalance < 50 ? "disabled" : "")>
                                 <i class="bi bi-send me-1"></i>Send Request
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>
-        </div>
 
-        <!-- Info -->
-        <div class="col-lg-7">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0 pt-3">
-                    <h6 class="fw-bold mb-0">
-                        <i class="bi bi-info-circle me-1 text-primary"></i>Important Info
-                    </h6>
-                </div>
+            <!-- Info -->
+            <div class="card border-0 shadow-sm mt-3">
                 <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-3 d-flex gap-2">
-                            <i class="bi bi-clock text-warning mt-1"></i>
-                            <span>Earnings stay in "Pending" for 14 days before becoming available</span>
+                    <ul class="list-unstyled mb-0 small">
+                        <li class="mb-2 d-flex gap-2">
+                            <i class="bi bi-lightning-charge text-success mt-1"></i>
+                            <span>Earnings credited instantly upon each sale</span>
                         </li>
-                        <li class="mb-3 d-flex gap-2">
+                        <li class="mb-2 d-flex gap-2">
                             <i class="bi bi-percent text-danger mt-1"></i>
-                            <span>Platform takes a 20% commission on every sale</span>
+                            <span>Platform takes 20% — you receive 80% of each sale</span>
                         </li>
-                        <li class="mb-3 d-flex gap-2">
-                            <i class="bi bi-calendar-check text-success mt-1"></i>
-                            <span>Withdrawal requests are processed within 2-3 business days</span>
+                        <li class="mb-2 d-flex gap-2">
+                            <i class="bi bi-calendar-check text-primary mt-1"></i>
+                            <span>Withdrawals processed within 2-3 business days</span>
                         </li>
                         <li class="d-flex gap-2">
-                            <i class="bi bi-shield-check text-primary mt-1"></i>
-                            <span>Minimum withdrawal amount is 50 EGP</span>
+                            <i class="bi bi-shield-check text-info mt-1"></i>
+                            <span>Minimum withdrawal: 50 EGP</span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
 
+        <!-- Right column: tables -->
+        <div class="col-lg-7">
+
+            <!-- Sales / Transactions -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0">
+                        <i class="bi bi-receipt me-1 text-primary"></i>Sales History
+                    </h6>
+                    <span class="badge bg-primary">@Model.Transactions.Count sale(s)</span>
+                </div>
+                <div class="card-body p-0">
+                    @if (!Model.Transactions.Any())
+                    {
+                        <div class="text-center text-muted py-4 small">No sales yet.</div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0 small">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Course</th>
+                                        <th class="text-end">Gross</th>
+                                        <th class="text-end text-danger">Fee (20%)</th>
+                                        <th class="text-end text-success">Net (80%)</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var t in Model.Transactions)
+                                    {
+                                        <tr>
+                                            <td>@t.CourseName</td>
+                                            <td class="text-end">@t.GrossAmount.ToString("N0") EGP</td>
+                                            <td class="text-end text-danger">@t.PlatformFee.ToString("N0") EGP</td>
+                                            <td class="text-end text-success fw-bold">@t.NetAmount.ToString("N0") EGP</td>
+                                            <td class="text-muted">@t.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot class="table-light fw-bold">
+                                    <tr>
+                                        <td>Total</td>
+                                        <td class="text-end">@Model.Transactions.Sum(t => t.GrossAmount).ToString("N0") EGP</td>
+                                        <td class="text-end text-danger">@Model.Transactions.Sum(t => t.PlatformFee).ToString("N0") EGP</td>
+                                        <td class="text-end text-success">@Model.Transactions.Sum(t => t.NetAmount).ToString("N0") EGP</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Withdrawal History -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0">
+                        <i class="bi bi-clock-history me-1 text-warning"></i>Withdrawal History
+                    </h6>
+                    <span class="badge bg-warning text-dark">@Model.Withdrawals.Count request(s)</span>
+                </div>
+                <div class="card-body p-0">
+                    @if (!Model.Withdrawals.Any())
+                    {
+                        <div class="text-center text-muted py-4 small">No withdrawal requests yet.</div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0 small">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Account</th>
+                                        <th>Requested</th>
+                                        <th>Paid At</th>
+                                        <th class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var w in Model.Withdrawals)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold">@w.Amount.ToString("N0") EGP</td>
+                                            <td>@w.Method</td>
+                                            <td class="text-muted">@w.AccountDetail</td>
+                                            <td class="text-muted">@w.RequestedAt.ToString("MMM dd, yyyy")</td>
+                                            <td class="text-muted">
+                                                @(w.PaidAt.HasValue ? w.PaidAt.Value.ToString("MMM dd, yyyy") : "—")
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge @(w.Status == "Paid" ? "bg-success" :
+                                                                      w.Status == "Rejected" ? "bg-danger" :
+                                                                      "bg-warning text-dark")">
+                                                    @w.Status
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>

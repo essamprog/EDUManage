@@ -214,7 +214,7 @@ public class InstructorController : Controller
     // ==========================================
     public async Task<IActionResult> Financials()
     {
-        var wallet = await _walletService.GetWalletAsync(UserId);
+        var wallet = await _walletService.GetFullWalletAsync(UserId);
         return View(wallet);
     }
 

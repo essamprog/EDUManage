@@ -1,5 +1,6 @@
 using EduManage.Application.Interfaces;
 using EduManage.Core.Entities;
+using EduManage.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,13 +17,16 @@ public class NotificationActionFilter : IAsyncActionFilter
 {
     private readonly INotificationService _notificationService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IOrderService _orderService;
 
     public NotificationActionFilter(
         INotificationService notificationService,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IOrderService orderService)
     {
         _notificationService = notificationService;
         _userManager = userManager;
+        _orderService = orderService;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -47,6 +51,10 @@ public class NotificationActionFilter : IAsyncActionFilter
                         controller.ViewData["SidebarAvatarUrl"] = user.ProfilePicture;
                         controller.ViewData["NavbarAvatarUrl"]  = user.ProfilePicture;
                     }
+
+                    // 3. Cart count badge in navbar
+                    var cart = await _orderService.GetCartAsync(userId);
+                    controller.ViewData["CartCount"] = cart.Items.Count();
                 }
                 catch
                 {
